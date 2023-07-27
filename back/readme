@@ -1,0 +1,3 @@
+api :
+- faire pagination pour autres controllers (properties déjà fait)
+- terminer annotation/documentation et gérer relations dans les controllers (lorsqu'une entité est supprimée/mise à jour, gérer les entités liées)
