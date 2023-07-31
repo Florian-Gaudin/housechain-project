@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
-import { Tooltip, Treemap } from "recharts";
+import { Tooltip } from "recharts";
 import variables from "../../styles/variables.module.scss";
+import dynamic from "next/dynamic";
+
+// Dynamically import the Treemap component
+const DynamicTreemap = dynamic(
+    () => import("recharts").then((mod) => mod.Treemap),
+    {
+        ssr: false, // Disable server-side rendering for this component
+    }
+);
 
 const GlobalChart = ({ coinsData }) => {
     const [dataArray, setDataArray] = useState([]);
@@ -51,7 +60,7 @@ const GlobalChart = ({ coinsData }) => {
                             "%",
                         size: coinsData[i].market_cap,
                         fill: colorPicker(
-                            coinsData[i].price_change_percentage_24h
+                            coinsData[i].market_cap_change_percentage_24h
                         ),
                     });
                 }
@@ -61,7 +70,11 @@ const GlobalChart = ({ coinsData }) => {
     }, [coinsData]);
 
     const TreemapToolTip = ({ active, payload }) => {
-        if (active && payload && payload.length) {
+        // Définir des paramètres par défaut pour les propriétés active et payload
+        active = active ?? false;
+        payload = payload ?? [];
+
+        if (active && payload.length) {
             return (
                 <div className="custom-tooltip">
                     <p className="label">{payload[0].payload.name}</p>
@@ -70,9 +83,10 @@ const GlobalChart = ({ coinsData }) => {
         }
         return null;
     };
+
     return (
         <div className="global-chart">
-            <Treemap
+            <DynamicTreemap
                 width={730}
                 height={180}
                 data={dataArray}
@@ -82,7 +96,7 @@ const GlobalChart = ({ coinsData }) => {
                 aspectRatio="1"
             >
                 <Tooltip content={<TreemapToolTip />} />
-            </Treemap>
+            </DynamicTreemap>
         </div>
     );
 };
