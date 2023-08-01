@@ -18,7 +18,7 @@ const PercentChange = ({ percent }) => {
 
     return (
         <p className="percent-change-container" style={{ color }}>
-            {percent ? percent.toFixed(2) + "%" : "-"}
+            {percent ? parseInt(percent).toFixed(2) + "%" : "-"}
         </p>
     );
 };

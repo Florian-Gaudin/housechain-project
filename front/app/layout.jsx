@@ -1,3 +1,4 @@
+"use client";
 import "../styles/globals.scss";
 import { Inter } from "next/font/google";
 import SearchBarProvider from "@/contexts/SearchBarContext";
