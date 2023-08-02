@@ -1,14 +1,12 @@
 "use client";
 import "../styles/globals.scss";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import SearchBarProvider from "@/contexts/SearchBarContext";
 import { Menu } from "@/components/Menu";
 import api from "../services/api";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "../services/reducer";
-
-const inter = Inter({ subsets: ["latin"] });
 
 const store = configureStore({
     reducer: rootReducer,
@@ -23,7 +21,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <Provider store={store}>
-            <html lang="fr" className={inter.className}>
+            <html lang="fr" className="font-body">
                 <body className="relative flex flex-col min-h-screen">
                     <SearchBarProvider>{children}</SearchBarProvider>
                 </body>

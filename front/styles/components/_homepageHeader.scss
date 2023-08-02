@@ -1,0 +1,12 @@
+.openNav {
+    transform: translateX(0);
+}
+.transition-timing {
+    transition-timing-function : cubic-bezier(.01,.35,.64,.94);
+    transition-duration: 0.5s;
+}
+.open-nav-content {
+    transition-timing-function : ease-out;
+    transition-duration: 0.7s;
+    transition-delay: 0.5s;
+}

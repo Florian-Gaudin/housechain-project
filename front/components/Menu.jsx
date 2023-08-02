@@ -59,7 +59,7 @@ export const Menu = ({ properties }) => {
 
                 <Transition
                     as={Fragment}
-                    enter="duration-200 ease-out"
+                    enter="duration-100 ease-out"
                     enterFrom="opacity-0 scale-95"
                     enterTo="opacity-100 scale-100"
                     leave="duration-100 ease-in"
