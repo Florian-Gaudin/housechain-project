@@ -7,6 +7,14 @@ import api from "../services/api";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "../services/reducer";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+    fas,
+    faForward,
+    faCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
+
+library.add(fas, faForward, faCircleXmark);
 
 const store = configureStore({
     reducer: rootReducer,

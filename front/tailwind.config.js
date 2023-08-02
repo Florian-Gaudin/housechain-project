@@ -20,6 +20,7 @@ module.exports = {
             yellow2: "rgb(239,181,48)",
             yellow3: "rgb(252,220,140)",
             bg: "rgb(14,12,49)",
+            bglight: "rgb(183, 182, 207)",
         },
         extend: {
             gradientColorStops: (theme) => ({

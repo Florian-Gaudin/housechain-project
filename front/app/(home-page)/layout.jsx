@@ -1,6 +1,8 @@
+"use client";
 import { Menu } from "@/components/Menu";
 import { getProperties } from "@/services/api";
 import SearchBlock from "@/components/Search/SearchBlock";
+import Header from "@/components/Homepage/Header";
 
 export default async function MainSiteLayout({ children }) {
     // const propertiesData = await getProperties();
@@ -21,11 +23,8 @@ export default async function MainSiteLayout({ children }) {
                 </div>
             </header> */}
             <main className="relative flex-1 z-10">
-                <div className="flex flex-wrap flex-col xl:flex-row gap-6">
-                    <section className="order-1 flex-1 flex flex-col gap-6 w-full xl:w-auto min-w-0">
-                        {children}
-                    </section>
-                </div>
+                <Header />
+                {children}
             </main>
         </>
     );
