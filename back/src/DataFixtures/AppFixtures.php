@@ -58,6 +58,8 @@ class AppFixtures extends Fixture
             $image = new Image();
             $image->setUrl($faker->imageUrl(200,300));
             $image->setProperty($faker->randomElement($properties));
+            $image->setType("secondary");
+            $image->setDescription($faker->sentence(5));
             $manager->persist($image);
             $images[] = $image;
         }

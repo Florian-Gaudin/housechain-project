@@ -23,6 +23,14 @@ class Image
     #[Groups(["getImages"])]
     private ?property $property = null;
 
+    #[ORM\Column(length: 50)]
+    #[Groups(["getProperties", "getImages"])]
+    private ?string $type = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(["getProperties", "getImages"])]
+    private ?string $description = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -48,6 +56,30 @@ class Image
     public function setProperty(?property $property): static
     {
         $this->property = $property;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }

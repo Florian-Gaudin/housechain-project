@@ -58,6 +58,8 @@ class ImageController extends AbstractController
             $imageData[] = [
                 'id' => $image->getId(),
                 'url' => $image->getUrl(),
+                'type' => $image->getType(),
+                'description' => $image->getDescription(),
                 // Add other image properties you want to include in the response.
             ];
         }
