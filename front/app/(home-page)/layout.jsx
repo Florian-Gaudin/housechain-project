@@ -1,7 +1,3 @@
-"use client";
-import { Menu } from "@/components/Menu";
-import { getProperties } from "@/services/api";
-import SearchBlock from "@/components/Search/SearchBlock";
 import Header from "@/components/Homepage/Header";
 
 export default async function MainSiteLayout({ children }) {

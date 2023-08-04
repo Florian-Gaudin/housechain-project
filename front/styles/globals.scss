@@ -2,11 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-    font-family: "Poppins";
-    font-weight: 400;
-    font-style: normal;
-    src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap')
+/** =================== Montserrat-Alt1 =================== **/
+$font-family: "Montserrat";
+$font-weights: Black, BlackItalic, Bold, BoldItalic, ExtraBold, ExtraBoldItalic, ExtraLight, ExtraLightItalic, Italic, Light, LightItalic, Medium, MediumItalic, Regular, SemiBold, SemiBoldItalic, Thin, ThinItalic;
+
+@each $weight in $font-weights {
+  $font-style: normal;
+
+  @font-face {
+    font-family: $font-family;
+    font-weight: $weight;
+    font-style: $font-style;
+    src: url("../public/fonts/montserrat/static/Montserrat-#{$weight}.ttf") format("ttf")
+  }
 }
 
 /** =================== Montserrat-Alt1 =================== **/
@@ -92,7 +100,7 @@
          url("../public/fonts/webfonts/MontserratAlt1-Black.woff") format("woff");
 }
 
-* {
+:root {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -102,6 +110,12 @@ html {
     scroll-behavior: smooth;
 }
 body {
-    width: 100vw;
     overflow-x: hidden;
+}
+.color-anim {animation: color 3s linear infinite;}
+
+@keyframes color {
+0%{fill:#9969C0}
+50% {fill:#FC1A4A}
+100% {fill:#9969C0}
 }

@@ -1,7 +1,7 @@
 import { list } from "postcss";
 import { useState } from "react";
 import TableLine from "./TableLine";
-import ToTop from "./ToTop";
+import ToTop from "../ToTopButton";
 import { useSelector } from "react-redux";
 import { isStableCoin } from "@/services/stablecoinList";
 

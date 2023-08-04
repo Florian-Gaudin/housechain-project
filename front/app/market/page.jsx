@@ -1,13 +1,20 @@
 "use client";
+import { configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
+import rootReducer from "../../services/reducer";
 import HeaderInfos from "@/components/Market/HeaderInfos";
 import GlobalChart from "@/components/Market/GlobalChart";
 import "../../styles/market.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Table from "@/components/Market/Table";
-import ToTop from "@/components/Market/ToTop";
+import ToTopButton from "@/components/ToTopButton";
 
 export default function Market({}) {
+    const store = configureStore({
+        reducer: rootReducer,
+        devTools: true,
+    });
     const [coinsData, setCoinsData] = useState([]);
     useEffect(() => {
         axios
@@ -26,13 +33,15 @@ export default function Market({}) {
         });
     }, []);
     return (
-        <div className="market-container">
-            <header>
-                <HeaderInfos />
-                <GlobalChart coinsData={coinsData} />
-            </header>
-            <Table coinsData={coinsData} />
-            <ToTop />
-        </div>
+        <Provider store={store}>
+            <div className="market-container">
+                <header>
+                    <HeaderInfos />
+                    <GlobalChart coinsData={coinsData} />
+                </header>
+                <Table coinsData={coinsData} />
+                <ToTopButton />
+            </div>
+        </Provider>
     );
 }
