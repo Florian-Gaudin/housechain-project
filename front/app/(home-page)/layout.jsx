@@ -1,5 +1,3 @@
-import Header from "@/components/Homepage/Header";
-
 export default async function MainSiteLayout({ children }) {
     // const propertiesData = await getProperties();
     // const productsData = await getProductsTemplates();
@@ -18,10 +16,7 @@ export default async function MainSiteLayout({ children }) {
                     />
                 </div>
             </header> */}
-            <main className="relative flex-1 z-10">
-                <Header />
-                {children}
-            </main>
+            <main className="relative flex-1 z-10">{children}</main>
         </>
     );
 }

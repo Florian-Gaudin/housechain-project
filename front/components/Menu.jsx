@@ -45,7 +45,7 @@ export const Menu = ({ properties, menuOpen, setMenuOpen }) => {
                         <div className="mx-auto group">
                             <a
                                 href="#"
-                                className="-mx-3 block rounded-lg py-5 px-16 text-sm md:text-lg font-bold leading-7 uppercase font-title bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text text-center transition-all group-hover:scale-150"
+                                className="-mx-3 block rounded-lg py-5 px-16 text-sm md:text-lg font-bold leading-7 uppercase font-title bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text text-center group-hover:scale-150 transition-all duration-1000"
                             >
                                 Se connecter
                             </a>

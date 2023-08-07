@@ -1,6 +1,6 @@
 "use client";
 import "../../styles/components/_homepageHeader.scss";
-import { useEffect, useState, useRef } from "react";
+import { useEffect } from "react";
 
 const About = () => {
     const handleIntersect = function (entries, observer) {
@@ -32,7 +32,7 @@ const About = () => {
     return (
         <div className="text-center">
             <div className="reveal-1">
-                <h4 className="mb-5 text-lg leading-8 uppercase font-extrabold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                <h4 className="mb-5 pb-5 text-4xl leading-8 uppercase font-title font-extrabold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
                     Qui sommes-nous ?
                 </h4>
                 <h2 className="text-4xl md:text-8xl uppercase font-title font-extrabold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
@@ -56,7 +56,7 @@ const About = () => {
                 votre portefeuille.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-                <a
+                {/* <a
                     href="#"
                     className="rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
@@ -67,7 +67,7 @@ const About = () => {
                     className="text-sm font-semibold leading-6 text-gray-900"
                 >
                     Learn more <span aria-hidden="true">→</span>
-                </a>
+                </a> */}
             </div>
         </div>
     );
