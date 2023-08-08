@@ -39,10 +39,7 @@ export default function Home() {
                 <Welcome />
             </section>
 
-            <section
-                id="about"
-                className="mx-auto py-16 lg:py-56 bg-white/70 min-h-[100vh]"
-            >
+            <section id="about" className="mx-auto py-16 bg-white/70">
                 <About />
             </section>
             <section id="services" className="mx-auto min-h-[100vh]">

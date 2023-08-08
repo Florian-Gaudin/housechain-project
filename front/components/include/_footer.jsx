@@ -1,11 +1,46 @@
+import indexSvg from "@/public/assets/svg/index-svg";
+import Logo from "../Homepage/Logo";
+
 const Footer = () => {
     return (
-        <div>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi
-            ipsum quasi ut fugit autem! Tempora quibusdam unde aperiam sit,
-            excepturi rerum quasi repellendus incidunt temporibus rem suscipit
-            quas asperiores minima cupiditate laudantium fuga. Ex aperiam, id
-            nemo est iste nulla.
+        <div className="flex flex-col">
+            <div className="py-1 mb-4 bg-move bg-gradient-to-r from-purple via-red to-purple"></div>
+            <div className="flex pt-5 justify-around">
+                <a href="/">
+                    <Logo />
+                </a>
+                <div className="flex flex-col justify-center">
+                    <p className="font-title font-bold text-lg uppercase bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                        Suivez-nous
+                    </p>
+                    <div className="flex flex-row justify-center gap-5 p-2">
+                        {indexSvg.facebook("fill-bglight cursor-pointer")}
+                        {indexSvg.twitter("fill-bglight cursor-pointer")}
+                    </div>
+                </div>
+                <div className="flex flex-col justify-center text-center">
+                    <p className="font-title font-bold text-lg uppercase bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                        Contactez-nous
+                    </p>
+                    <div className="flex flex-row justify-center gap-5 p-2">
+                        <p className="text-bglight text-center">
+                            contact@housechain.com
+                            <br />
+                            Charleville-Mézières
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div className="flex items-center justify-center p-4 mx-5 border-t border-bglight">
+                <p className="text-bglight p-2 mr-2">
+                    Copyright 2023 © All Right Reserved –{" "}
+                </p>
+                <a href="/">
+                    <span className="uppercase font-title bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                        Housechain
+                    </span>
+                </a>
+            </div>
         </div>
     );
 };
