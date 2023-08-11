@@ -1,11 +1,25 @@
+"use client";
+
 import "../../styles/components/_homepageHeader.scss";
 import About from "@/components/Homepage/About";
 import Properties from "@/components/Homepage/Properties";
 import Services from "@/components/Homepage/Services";
 import Welcome from "@/components/Homepage/Welcome";
 import Footer from "@/components/include/_footer";
+import { getSession, useSession } from "next-auth/react";
 
 export default function Home() {
+    const { data: session } = useSession();
+    console.log(session);
+
+    fetch(`${process.env.NEXT_PUBLIC_API}/api/me`, {
+        headers: {
+            Authorization: "Bearer " + session?.accessToken,
+        },
+    })
+        .then((res) => res.json())
+        .then((data) => console.log(data));
+
     return (
         <div className="bg-bg relative isolate pt-14 bg-fixed bg-center bg-cover bg-no-repeat bg-home">
             <div
@@ -42,14 +56,14 @@ export default function Home() {
             <section id="about" className="mx-auto py-16 bg-white/70">
                 <About />
             </section>
-            <section id="services" className="mx-auto min-h-[100vh]">
-                <Services />
-            </section>
             <section
                 id="properties"
-                className="mx-auto py-16 lg:py-16 bg-white/70 min-h-[100vh]"
+                className="mx-auto py-16 lg:py-16  min-h-[100vh]"
             >
                 <Properties />
+            </section>
+            <section id="services" className="mx-auto min-h-[100vh]">
+                <Services />
             </section>
             <Footer />
         </div>

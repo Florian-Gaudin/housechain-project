@@ -8,6 +8,8 @@ import { fast } from "./fast";
 import { security } from "./security";
 import { simplicity } from "./simplicity";
 import { flexibility } from "./flexibility";
+import { heart } from "./heart";
+import { location } from "./location";
 
 export default {
     facebook,
@@ -20,4 +22,6 @@ export default {
     security,
     simplicity,
     flexibility,
+    heart,
+    location,
 };

@@ -8,10 +8,23 @@
   background-position: center;
   background-size: cover;
   width: 600px;
-  height: 400px;
+  height: 470px;
+  margin: 0 auto;
 }
 
 .swiper-slide img {
   display: block;
   width: 100%;
+}
+
+.swiper-slide-shadow-left, .swiper-slide-shadow-right {
+  opacity: 0 !important;
+}
+
+.swiper-pagination-bullet {
+  background-color: gray;
+  opacity: 0.5;
+}
+.swiper-pagination-bullet-active {
+  background-color: purple;
 }

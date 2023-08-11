@@ -23,10 +23,10 @@ export default function SwiperProperties({
                 grabCursor={true}
                 centeredSlides={true}
                 slidesPerView={"auto"}
-                initialSlide={1}
+                initialSlide={3}
                 coverflowEffect={{
-                    rotate: 50,
-                    stretch: 0,
+                    rotate: 20,
+                    stretch: 200,
                     depth: 100,
                     modifier: 1,
                     slideShadows: true,

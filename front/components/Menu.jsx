@@ -5,10 +5,10 @@ import { useEffect, useRef } from "react";
 
 export const Menu = ({ menuOpen, setMenuOpen }) => {
     const navigation = [
-        { name: "Espace personnel", href: "#" },
-        { name: "Nos Propriétés", href: "#" },
-        { name: "Marché cryto", href: "#" },
-        { name: "Contact", href: "#" },
+        { name: "Espace personnel", href: "/account" },
+        { name: "Nos Propriétés", href: "/store" },
+        { name: "Marché crypto", href: "/market" },
+        { name: "Contact", href: "/contact" },
     ];
 
     const menuRef = useRef();

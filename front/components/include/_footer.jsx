@@ -2,6 +2,7 @@ import indexSvg from "@/public/assets/svg/index-svg";
 import Logo from "../Homepage/Logo";
 
 const Footer = () => {
+    const year = new Date().getFullYear();
     return (
         <div className="flex flex-col">
             <div className="py-1 mb-4 bg-move bg-gradient-to-r from-purple via-red to-purple"></div>
@@ -33,7 +34,7 @@ const Footer = () => {
             </div>
             <div className="flex items-center justify-center p-4 mx-5 border-t border-bglight">
                 <p className="text-bglight p-2 mr-2">
-                    Copyright 2023 © All Right Reserved –{" "}
+                    Copyright {year} © Tous droits réservés –{" "}
                 </p>
                 <a href="/">
                     <span className="uppercase font-title bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
