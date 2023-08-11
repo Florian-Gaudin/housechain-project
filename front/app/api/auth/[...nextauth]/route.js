@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import jwt_decode from "jwt-decode";
 
 async function Auth(request, context) {
     return NextAuth(request, context, {
@@ -68,6 +67,25 @@ async function Auth(request, context) {
                     props.token.accessToken = props.user.accessToken;
                 }
                 // console.log("new token", props.token);
+
+                // ----------------------------------------------------------------------
+                // // TODO : REFRESH TOKEN WHEN EXPIRY
+                // // This will only be executed at login. Each next invocation will skip this part.
+                // token.token = user.token;
+                // token.refresh_token = user.refresh_token;
+                // // token.expires = @TODO define refresh token expiration
+                // // If accessTokenExpiry
+                // const tokenDecoded = jwt_decode(token.token);
+                // // Duration token 1 hour so refresh it every 55 minutes
+                // const shouldRefreshTime = tokenExpiration(tokenDecoded);
+                // // If the token is still valid, just return it.
+                // if (trigger !== "update" && shouldRefreshTime > 0) {
+                //     return token;
+                // }
+                // // If the call arrives after expired
+                // token = await refreshAccessToken(token);
+                // return tokenDecoded;
+                // ----------------------------------------------------------------
 
                 return props.token;
             },
