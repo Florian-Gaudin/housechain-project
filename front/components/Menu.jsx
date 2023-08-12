@@ -1,5 +1,5 @@
 "use client";
-import MenuSocials from "./MenuSocials";
+import MenuSocials from "./Fields/MenuSocials";
 import indexSvg from "../public/assets/svg/index-svg";
 import { useEffect, useRef } from "react";
 
@@ -59,7 +59,7 @@ export const Menu = ({ menuOpen, setMenuOpen }) => {
                     <div className="py-6">
                         <div className="mx-auto group">
                             <a
-                                href="#"
+                                href="/login"
                                 className="-mx-3 block rounded-lg py-5 px-16 text-sm md:text-lg font-bold leading-7 uppercase font-title bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text text-center group-hover:scale-150 transition-all duration-1000"
                             >
                                 Se connecter

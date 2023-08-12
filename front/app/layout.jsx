@@ -1,15 +1,10 @@
-"use client";
-import Header from "@/components/include/_header";
+import Header from "@/components/Include/_header";
 import "../styles/globals.scss";
-import localFont from "next/font/local";
-import Footer from "@/components/include/_footer";
-import { Suspense } from "react";
-import Loading from "./loading";
-import { SessionProvider } from "next-auth/react";
+import SessionProvider from "@/context/NextAuthContext/SessionProvider.jsx";
 
 export default function RootLayout({ children }) {
     return (
-        <SessionProvider>
+        <html lang="fr" className="font-body">
             <head>
                 <title>Housechain</title>
                 <meta
@@ -17,12 +12,12 @@ export default function RootLayout({ children }) {
                     content="L'immobilier réinventé par la blockchain"
                 />
             </head>
-            <html lang="fr" className="font-body">
-                <body className="relative flex flex-col min-h-screen">
+            <body className="relative flex flex-col min-h-screen">
+                <SessionProvider>
                     <Header />
-                    <Suspense fallback={<Loading />}>{children}</Suspense>
-                </body>
-            </html>
-        </SessionProvider>
+                    {children}
+                </SessionProvider>
+            </body>
+        </html>
     );
 }

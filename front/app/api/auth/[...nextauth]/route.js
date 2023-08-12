@@ -41,9 +41,10 @@ async function Auth(request, context) {
                                 }
                             );
                             const user = await fetchUser.json();
+                            console.log("user dans route.js", user);
                             return {
                                 accessToken: userResponseData.token,
-                                user: user[0],
+                                user: user,
                             };
                         }
                         if (
@@ -66,7 +67,12 @@ async function Auth(request, context) {
                     props.token.user = props.user.user;
                     props.token.accessToken = props.user.accessToken;
                 }
-                // console.log("new token", props.token);
+                // console.log(
+                //     "new token",
+                //     props.token,
+                //     "jwtprops.user",
+                //     props.user
+                // );
 
                 // ----------------------------------------------------------------------
                 // // TODO : REFRESH TOKEN WHEN EXPIRY

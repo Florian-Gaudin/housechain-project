@@ -1,4 +1,4 @@
-import indexSvg from "../public/assets/svg/index-svg";
+import indexSvg from "../../public/assets/svg/index-svg";
 
 const MenuSocials = () => {
     return (

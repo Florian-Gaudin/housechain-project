@@ -1,4 +1,4 @@
-import Header from "@/components/include/_header";
+import Header from "@/components/Include/_header";
 
 const Store = () => {
     return (

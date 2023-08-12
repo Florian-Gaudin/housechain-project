@@ -1,3 +1,5 @@
+// NAVBAR LATERAL MENU
+
 .openNav {
     transform: translateX(0);
 }
@@ -57,7 +59,32 @@
     }
 }
 
+// NAVBAR SUPERIEURE HOVER
+.nav-wrapper {
+  transition: background-color 2000ms;
 
+  &:hover {
+      background-color: rgba(255, 255, 255, 0.8);
+      box-shadow: 2px 4px 0px rgba(0, 0, 0, 0.1);
+
+      /* Show .nav-content when hovering over .nav-wrapper */
+      .nav-content {
+          opacity: 1;
+          background-color: transparent;
+      }
+  }
+}
+
+.nav-content {
+  background-color: white;
+  padding: 10px;
+  transition: opacity 0.3s;
+  opacity: 0;
+  width: 100%;
+  z-index: 1; /* Ensure it's above .nav-wrapper when visible */
+}
+
+// APPARITION DES ELEMENTS AU REVEAL/SCROLL
 .reveal-loaded .reveal [class*="reveal-"] {
     opacity: 0!important;
     animation: none!important;

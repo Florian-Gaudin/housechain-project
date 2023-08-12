@@ -48,7 +48,6 @@ class UserController extends AbstractController
 
 
     #[OA\Tag(name: 'Users')]
-    #[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants pour créer un utilisateur')]
     #[Route('/api/users', name: 'create_user', methods: ['POST'])]
     public function createUser(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, ValidatorInterface $validator): JsonResponse
     {

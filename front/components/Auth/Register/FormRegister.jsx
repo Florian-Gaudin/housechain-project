@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/Button";
+import Button from "@/components/Fields/Button";
 import Link from "next/link";
 import Input from "@/components/Form/Input";
 import { useForm } from "react-hook-form";
@@ -15,9 +15,43 @@ export default function FormRegister() {
     } = useForm();
     const inputProps = { register, errors };
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         const data = getValues();
         console.log(data);
+        try {
+            setLoading(true);
+
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API}/api/users`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                }
+            );
+
+            if (!response.ok) {
+                // Gérer les erreurs de l'API
+                const responseData = await response.json();
+                console.error(
+                    "Erreur lors de la création de l'utilisateur:",
+                    responseData
+                );
+            } else {
+                // L'utilisateur a été créé avec succès
+                console.log("Utilisateur créé avec succès !");
+                // Vous pouvez rediriger l'utilisateur vers une autre page ici
+            }
+        } catch (error) {
+            console.error(
+                "Erreur réseau lors de la création de l'utilisateur:",
+                error
+            );
+        } finally {
+            setLoading(false);
+        }
     };
 
     const [loading, setLoading] = useState(false);
@@ -80,42 +114,6 @@ export default function FormRegister() {
                 </div>
                 <Input
                     type="text"
-                    name="compagny"
-                    label="Centre"
-                    placeholder="Reims"
-                    className="border py-2 px-2"
-                    validation={{ required: true }}
-                    {...inputProps}
-                />
-                <Input
-                    type="text"
-                    name="tel"
-                    label="Numéro de téléphone"
-                    placeholder="0909090909"
-                    className="border py-2 px-2"
-                    validation={{ required: true }}
-                    {...inputProps}
-                />
-                <Input
-                    type="text"
-                    name="sex"
-                    label="Genre"
-                    placeholder="Masculin"
-                    className="border py-2 px-2"
-                    validation={{ required: true }}
-                    {...inputProps}
-                />
-                <Input
-                    type="text"
-                    name="birthday"
-                    label="Date de naissance"
-                    placeholder="21/04/1990"
-                    className="border py-2 px-2"
-                    validation={{ required: true }}
-                    {...inputProps}
-                />
-                <Input
-                    type="text"
                     name="email"
                     label="Adresse mail"
                     placeholder="test@test.fr"
@@ -149,7 +147,7 @@ export default function FormRegister() {
                     Déjà un compte ?{" "}
                     <Link href="/login" className="text-primary">
                         Se connecter
-                    </Link>{" "}
+                    </Link>
                 </span>
             </form>
         </div>

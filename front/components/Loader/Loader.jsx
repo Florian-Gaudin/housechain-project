@@ -1,13 +1,8 @@
-import "../../styles/components/_homepageHeader.scss";
-import About from "@/components/Homepage/About";
-import Properties from "@/components/Homepage/Properties";
-import Services from "@/components/Homepage/Services";
-import Welcome from "@/components/Homepage/Welcome";
-import Footer from "@/components/Include/_footer";
+import "../../styles/components/loader.scss";
 
-const Home = () => {
+const Loader = () => {
     return (
-        <div className="bg-bg relative isolate pt-14 bg-fixed bg-center bg-cover bg-no-repeat bg-home">
+        <div className="bg-bg relative isolate pt-14 bg-fixed bg-center bg-cover bg-no-repeat bg-home w-[100vw] h-[100vh] overflow-hidden">
             <div
                 className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
                 aria-hidden="true"
@@ -32,27 +27,18 @@ const Home = () => {
                     }}
                 />
             </div>
-            <section
-                id="welcome"
-                className="mx-auto py-32 sm:py-48 lg:py-56 min-h-[100vh] relative"
-            >
-                <Welcome />
-            </section>
-
-            <section id="about" className="mx-auto py-16 bg-white/70">
-                <About />
-            </section>
-            <section
-                id="properties"
-                className="mx-auto py-16 lg:py-16  min-h-[100vh]"
-            >
-                <Properties />
-            </section>
-            <section id="services" className="mx-auto min-h-[100vh]">
-                <Services />
-            </section>
-            <Footer />
+            <div className="w-full h-full flex justify-center items-center">
+                <p className="text-4xl md:text-8xl absolute top-[50%] uppercase font-title font-extrabold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                    Chargement...
+                </p>
+                <div className="loader">
+                    <div className="inner one"></div>
+                    <div className="inner two"></div>
+                    <div className="inner three"></div>
+                </div>
+            </div>
         </div>
     );
 };
-export default Home;
+
+export default Loader;

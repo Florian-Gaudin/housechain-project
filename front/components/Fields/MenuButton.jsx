@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Menu } from "./Menu";
+import { Menu } from "../Menu";
 
 const MenuButton = () => {
     const [menuOpen, setMenuOpen] = useState(false);

@@ -1,4 +1,4 @@
-import index from "../public/assets/svg/index-svg";
+import index from "../../public/assets/svg/index-svg";
 
 const ToTopButton = () => {
     return (

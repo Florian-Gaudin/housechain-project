@@ -3,7 +3,7 @@
 import Select from "../Fields/Select";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { SearchBarContext } from "@/contexts/SearchBarContext";
+import { SearchBarContext } from "@/context/SearchBarContext";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
 export default function SearchBar({ properties }) {

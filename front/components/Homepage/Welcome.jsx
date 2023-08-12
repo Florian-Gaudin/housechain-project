@@ -1,5 +1,5 @@
 import "../../styles/components/_homepageHeader.scss";
-import ToTop from "../ToTop";
+import ToTop from "../Fields/ToTop";
 import ScrollLink from "./ScrollLink";
 import Socials from "./Socials";
 

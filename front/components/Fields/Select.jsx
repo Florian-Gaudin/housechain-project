@@ -3,7 +3,7 @@
 import { Fragment, useContext, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
-import { SearchBarContext } from "@/contexts/SearchBarContext";
+import { SearchBarContext } from "@/context/SearchBarContext";
 
 export default function Select({
     items,

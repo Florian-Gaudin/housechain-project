@@ -8,7 +8,7 @@ import "../../styles/market.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Table from "@/components/Market/Table";
-import ToTopButton from "@/components/ToTopButton";
+import ToTopButton from "@/components/Fields/ToTopButton";
 
 export default function Market({}) {
     const store = configureStore({
