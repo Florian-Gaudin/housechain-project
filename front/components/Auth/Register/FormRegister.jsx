@@ -1,22 +1,69 @@
 "use client";
 
-import Button from "@/components/Fields/Button";
 import Link from "next/link";
-import Input from "@/components/Form/Input";
-import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import validator from "validator";
+import { object, ref, string } from "yup";
+
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+
+import AuthError from "@/components/error/AuthError.jsx";
+
+const schema = object({
+    name: string()
+        .required("Veuillez entrer votre nom.")
+        .min(3, "Doit contenir entre 3 et 16 caractères.")
+        .max(16, "Doit contenir entre 3 et 16 caractères.")
+        .trim(),
+    email: string()
+        .required("Veuillez entrer votre adresse email")
+        .email("Adresse email invalide.")
+        .trim(),
+    password: string()
+        .required("Veuillez choisir un mot de passe")
+        .min(8, "Doit contenir entre 8 et 16 caractères.")
+        .max(16, "Doit contenir entre 8 et 16 caractères.")
+        .trim(),
+    confirmPassword: string()
+        .required("Merci de bien vouloir confirmer le mot de passe.")
+        .oneOf(
+            [ref("password"), null],
+            "Les mots de passe ne correspondent pas !"
+        ),
+}).required();
 
 export default function FormRegister() {
-    const {
-        register,
-        handleSubmit,
-        getValues,
-        formState: { errors },
-    } = useForm();
-    const inputProps = { register, errors };
+    const [error, setError] = useState({});
 
-    const onSubmit = async () => {
-        const data = getValues();
+    const router = useRouter();
+
+    const {
+        control,
+        register,
+        getValues,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
+
+    const onSubmit = async (data) => {
+        const [loading, setLoading] = useState(false);
+
+        const { name, email, password, confirmPassword } = data;
+
+        // Use validator to avoid XSS attacks.
+        const safeData = {
+            name: validator.escape(name),
+            email: validator.escape(email),
+            password: validator.escape(password),
+            confirmPassword: validator.escape(confirmPassword),
+        };
         console.log(data);
         try {
             setLoading(true);
@@ -42,7 +89,7 @@ export default function FormRegister() {
             } else {
                 // L'utilisateur a été créé avec succès
                 console.log("Utilisateur créé avec succès !");
-                // Vous pouvez rediriger l'utilisateur vers une autre page ici
+                router.push("/login");
             }
         } catch (error) {
             console.error(
@@ -54,101 +101,134 @@ export default function FormRegister() {
         }
     };
 
-    const [loading, setLoading] = useState(false);
     return (
         <div className="py-4 px-6 bg-white text-light text-sm md:w-1/2">
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col gap-6"
+                className="flex flex-col gap-7"
             >
-                <Input
-                    type="text"
-                    name="lastname"
-                    label="Nom"
-                    placeholder="Dupont"
-                    className="border py-2 px-2"
-                    validation={{ required: true }}
-                    {...inputProps}
-                />
-                <Input
-                    type="text"
-                    name="firstname"
-                    label="Prénom"
-                    placeholder="Jean"
-                    className="border py-2 px-2"
-                    validation={{ required: true }}
-                    {...inputProps}
-                />
-                <Input
-                    type="text"
-                    name="address"
-                    label="Adresse postale"
-                    placeholder="8 rue de la République"
-                    className="border py-2 px-2"
-                    validation={{ required: true }}
-                    {...inputProps}
-                />
-                <div className="flex flex-row gap-3">
-                    <div className="md:w-2/3">
-                        <Input
+                <Controller
+                    name="name"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            id="name"
                             type="text"
-                            name="city"
-                            label="Ville"
-                            placeholder="Reims"
-                            className="border py-2 px-2"
-                            validation={{ required: true }}
-                            {...inputProps}
+                            variant="standard"
+                            className="ml-[20px] mr-[20px]"
+                            label="Name"
+                            placeholder="Enter your name"
+                            helperText={errors.name ? errors.name?.message : ""}
+                            error={errors.name ? Boolean(true) : Boolean(false)}
                         />
-                    </div>
-                    <div className="md:w-1/3">
-                        <Input
-                            type="text"
-                            name="postal-code"
-                            label="Code postal"
-                            placeholder="8 rue de la République"
-                            className="border py-2 px-2"
-                            validation={{ required: true }}
-                            {...inputProps}
-                        />
-                    </div>
-                </div>
-                <Input
-                    type="text"
+                    )}
+                />
+
+                <Controller
                     name="email"
-                    label="Adresse mail"
-                    placeholder="test@test.fr"
-                    className="border py-2 px-2"
-                    validation={{ required: true }}
-                    {...inputProps}
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            id="email"
+                            type="email"
+                            variant="standard"
+                            className="ml-[20px] mr-[20px]"
+                            label="Email"
+                            placeholder="Enter your email"
+                            helperText={
+                                errors.email ? errors.email?.message : ""
+                            }
+                            autoComplete="off"
+                            error={
+                                errors.email ? Boolean(true) : Boolean(false)
+                            }
+                        />
+                    )}
                 />
-                <Input
-                    type="password"
+
+                <Controller
                     name="password"
-                    label="Mot de passe"
-                    className="border py-2 px-2"
-                    validation={{ required: true }}
-                    pattern={{
-                        value: /^.{8,}$/,
-                        message:
-                            "Le mot de passe doit contenir au moins 8 caractères.",
-                    }}
-                    {...inputProps}
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            id="password"
+                            type="password"
+                            variant="standard"
+                            className="ml-[20px] mr-[20px]"
+                            label="Password"
+                            placeholder="Enter your password"
+                            helperText={
+                                errors.password ? errors.password?.message : ""
+                            }
+                            error={
+                                errors.password ? Boolean(true) : Boolean(false)
+                            }
+                        />
+                    )}
                 />
-                <div className="flex justify-center w-full gap-4 text-white rounded-lg">
-                    <Button
-                        type="submit"
-                        title="Se connecter"
-                        className="bg-[#009EE0] rounded-lg py-3 px-3 text-xl font-semibold"
-                    >
-                        <span>S&apos;inscrire</span>
-                    </Button>
-                </div>
-                <span className="w-full text-center">
-                    Déjà un compte ?{" "}
-                    <Link href="/login" className="text-primary">
-                        Se connecter
-                    </Link>
-                </span>
+
+                <Controller
+                    name="confirmPassword"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            id="confirmPassword"
+                            type="password"
+                            variant="standard"
+                            className="ml-[20px] mr-[20px]"
+                            label="Confirm password"
+                            placeholder="Enter again your password"
+                            helperText={
+                                errors.confirmPassword
+                                    ? errors.confirmPassword?.message
+                                    : ""
+                            }
+                            error={
+                                errors.confirmPassword
+                                    ? Boolean(true)
+                                    : Boolean(false)
+                            }
+                        />
+                    )}
+                />
+
+                {error?.message && (
+                    <AuthError error={error} setError={setError} />
+                )}
+
+                <Button
+                    type="submit"
+                    variant="outlined"
+                    className="mt-[40px] ml-[20px] mr-[20px]"
+                >
+                    Register
+                </Button>
+
+                <Button
+                    type="button"
+                    variant="outlined"
+                    color="warning"
+                    className="mt-[40px] ml-[20px] mr-[20px]"
+                >
+                    <Link href="/signin">Go to sign-in</Link>
+                </Button>
+
+                <Button
+                    type="button"
+                    variant="outlined"
+                    color="secondary"
+                    className="ml-[20px] mr-[20px]"
+                >
+                    <Link href="/">Back to home page</Link>
+                </Button>
             </form>
         </div>
     );

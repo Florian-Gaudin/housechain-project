@@ -4,7 +4,7 @@ import Button from "@/components/Fields/Button";
 import Link from "next/link";
 import Input from "@/components/Form/Input";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoaderIcon from "@/components/Icons/LoaderIcon";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -18,6 +18,36 @@ export default function FormLogin() {
     const inputProps = { register, errors };
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const [decodedCallbackURL, setDecodedCallbackURL] = useState("/"); // url de redirection par défaut
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            // Obtenir l'URL actuelle de la page
+            const currentURL = window.location.href;
+
+            // Rechercher le paramètre "callbackUrl="
+            const callbackParam = "callbackUrl=";
+            const startIndex = currentURL.indexOf(callbackParam);
+
+            if (startIndex !== -1) {
+                // Extraire l'URL après le paramètre "callbackUrl="
+                const callbackURL = currentURL.substring(
+                    startIndex + callbackParam.length
+                );
+
+                // Décoder l'URL encodée
+                let decodedCallbackURL = decodeURIComponent(callbackURL);
+                // Vérifier si l'URL contient "8000" et le remplacez par "3000"
+                if (decodedCallbackURL.includes("8000")) {
+                    decodedCallbackURL = decodedCallbackURL.replace(
+                        "8000",
+                        "3000"
+                    );
+                }
+                setDecodedCallbackURL(decodedCallbackURL);
+            }
+        }
+    }, []);
 
     const onSubmit = (data) => {
         console.log(data);
@@ -26,14 +56,13 @@ export default function FormLogin() {
             username: data.username,
             password: data.password,
             redirect: false,
-            // callbackUrl: "/",
         }).then((r) => {
             setLoading(false);
             console.log(r);
             if (r.error) {
                 console.log(r); // TODO: changer l'erreur
             }
-            router.push("/");
+            router.push(decodedCallbackURL);
             // if (r.url !== null) {
             // }
         });

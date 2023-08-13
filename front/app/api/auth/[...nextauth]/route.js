@@ -107,6 +107,9 @@ async function Auth(request, context) {
         jwt: {
             secret: process.env.NEXTAUTH_SECRET,
         },
+        pages: {
+            signIn: "/login",
+        },
     });
 }
 

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Role;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,12 +54,16 @@ class UserController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
+        //fetch the default role
+        $defaultRole = $em->getRepository(Role::class)->findOneBy(['name' => 'ROLE_USER']);
+
         $user = new User();
         $user->setName($data['name']);
         $user->setSurname($data['surname']);
         $user->setMail($data['mail']);
         $user->setAuthenticated(false); // Assuming default value is false for 'authenticated' field
-        $user->setUtilityTokenTotalAmount($data['utility_token_total_amount']);
+        $user->setUtilityTokenTotalAmount(0);
+        $user->setRole($defaultRole);
 
         // Hash the password before persisting
         $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
