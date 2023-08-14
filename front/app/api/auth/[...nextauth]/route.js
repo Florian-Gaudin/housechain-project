@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+// import EmailProvider from "next-auth/providers/email";
 
 async function Auth(request, context) {
     return NextAuth(request, context, {
@@ -60,6 +61,10 @@ async function Auth(request, context) {
                     }
                 },
             }),
+            // EmailProvider({
+            //     server: process.env.EMAIL_SERVER,
+            //     from: process.env.EMAIL_FROM,
+            // }),
         ],
         callbacks: {
             async jwt(props) {

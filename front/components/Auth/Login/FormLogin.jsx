@@ -20,6 +20,7 @@ export default function FormLogin() {
     const [loading, setLoading] = useState(false);
     const [decodedCallbackURL, setDecodedCallbackURL] = useState("/"); // url de redirection par défaut
 
+    // rediriger l'utilisateur sur la page demandée avant le login
     useEffect(() => {
         if (typeof window !== "undefined") {
             // Obtenir l'URL actuelle de la page

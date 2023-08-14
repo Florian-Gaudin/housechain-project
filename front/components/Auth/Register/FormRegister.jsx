@@ -19,7 +19,12 @@ const schema = object({
         .min(3, "Doit contenir entre 3 et 16 caractères.")
         .max(16, "Doit contenir entre 3 et 16 caractères.")
         .trim(),
-    email: string()
+    surname: string()
+        .required("Veuillez entrer votre prénom.")
+        .min(3, "Doit contenir entre 3 et 16 caractères.")
+        .max(16, "Doit contenir entre 3 et 16 caractères.")
+        .trim(),
+    mail: string()
         .required("Veuillez entrer votre adresse email")
         .email("Adresse email invalide.")
         .trim(),
@@ -52,9 +57,8 @@ export default function FormRegister() {
         resolver: yupResolver(schema),
     });
 
+    const [loading, setLoading] = useState(false);
     const onSubmit = async (data) => {
-        const [loading, setLoading] = useState(false);
-
         const { name, email, password, confirmPassword } = data;
 
         // Use validator to avoid XSS attacks.
@@ -125,27 +129,44 @@ export default function FormRegister() {
                         />
                     )}
                 />
-
                 <Controller
-                    name="email"
+                    name="surname"
                     control={control}
                     defaultValue=""
                     render={({ field }) => (
                         <TextField
                             {...field}
-                            id="email"
-                            type="email"
+                            id="surname"
+                            type="text"
                             variant="standard"
                             className="ml-[20px] mr-[20px]"
-                            label="Email"
-                            placeholder="Enter your email"
+                            label="Surname"
+                            placeholder="Enter your surname"
                             helperText={
-                                errors.email ? errors.email?.message : ""
+                                errors.surname ? errors.surname?.message : ""
                             }
-                            autoComplete="off"
                             error={
-                                errors.email ? Boolean(true) : Boolean(false)
+                                errors.surname ? Boolean(true) : Boolean(false)
                             }
+                        />
+                    )}
+                />
+                <Controller
+                    name="mail"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            id="mail"
+                            type="mail"
+                            variant="standard"
+                            className="ml-[20px] mr-[20px]"
+                            label="mail"
+                            placeholder="Enter your email"
+                            helperText={errors.mail ? errors.mail?.message : ""}
+                            autoComplete="off"
+                            error={errors.mail ? Boolean(true) : Boolean(false)}
                         />
                     )}
                 />
