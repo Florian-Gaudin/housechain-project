@@ -2,7 +2,16 @@ import { sign } from "jsonwebtoken";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { cookies } from "next/dist/client/components/headers";
+import GoogleProvider from "next-auth/providers/google";
 // import EmailProvider from "next-auth/providers/email";
+
+const GOOGLE_AUTHORIZATION_URL =
+    "https://accounts.google.com/o/oauth2/v2/auth?" +
+    new URLSearchParams({
+        prompt: "consent",
+        access_type: "offline",
+        response_type: "code",
+    });
 
 export async function createCookies(credentials) {
     // console.log(credentials.username.username);
@@ -135,6 +144,11 @@ async function Auth(request, context) {
                     }
                 },
             }),
+            GoogleProvider({
+                clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+                clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+                authorizationUrl: GOOGLE_AUTHORIZATION_URL,
+            }),
             // EmailProvider({
             //     server: process.env.EMAIL_SERVER,
             //     from: process.env.EMAIL_FROM,
@@ -146,12 +160,16 @@ async function Auth(request, context) {
                     props.token.user = props.user.user;
                     props.token.accessToken = props.user.accessToken;
                 }
-                // console.log(
-                //     "new token",
-                //     props.token,
-                //     "jwtprops.user",
-                //     props.user
-                // );
+                console.log(
+                    "props jwt",
+                    props,
+                    "props.trigger",
+                    props.trigger,
+                    "new token",
+                    props.token,
+                    "jwtprops.user",
+                    props.user
+                );
 
                 // ----------------------------------------------------------------------
                 // // TODO : REFRESH TOKEN WHEN EXPIRY

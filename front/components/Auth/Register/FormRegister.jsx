@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -12,6 +12,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
 import AuthError from "@/components/error/AuthError.jsx";
+import { useSession } from "next-auth/react";
 
 const schema = object({
     name: string()
@@ -42,9 +43,15 @@ const schema = object({
 }).required();
 
 export default function FormRegister() {
-    const [error, setError] = useState({});
-
+    const { data: session } = useSession();
     const router = useRouter();
+    useEffect(() => {
+        if (session && session.user) {
+            router.push("/");
+        }
+    }, [session]);
+
+    const [error, setError] = useState({});
 
     const {
         control,

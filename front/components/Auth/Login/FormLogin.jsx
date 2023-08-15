@@ -8,15 +8,22 @@ import { useEffect, useState } from "react";
 import LoaderIcon from "@/components/Icons/LoaderIcon";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function FormLogin() {
+    const { data: session } = useSession();
+    const router = useRouter();
+    useEffect(() => {
+        if (session && session.user) {
+            router.push("/");
+        }
+    }, [session]);
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
     const inputProps = { register, errors };
-    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [decodedCallbackURL, setDecodedCallbackURL] = useState("/"); // url de redirection par défaut
 
