@@ -35,6 +35,11 @@ export async function createCookies(credentials) {
     return outsiteJWTCookie;
 }
 
+export async function cookiesDeleting() {
+    cookies().delete("OutSiteJWT");
+    cookies().delete("Username");
+}
+
 async function Auth(request, context) {
     return NextAuth(request, context, {
         providers: [
@@ -104,6 +109,8 @@ async function Auth(request, context) {
                                 );
                                 const user = await fetchUser.json();
                                 console.log("user dans route.js", user);
+                                //Delete cookies for more security
+                                const deleteCookies = await cookiesDeleting();
                                 return {
                                     accessToken: user.token,
                                     user: user,
