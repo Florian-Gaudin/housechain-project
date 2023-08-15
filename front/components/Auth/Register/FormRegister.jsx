@@ -13,34 +13,6 @@ import Button from "@mui/material/Button";
 
 import AuthError from "@/components/error/AuthError.jsx";
 
-const schema = object({
-    name: string()
-        .required("Veuillez entrer votre nom.")
-        .min(3, "Doit contenir entre 3 et 16 caractères.")
-        .max(16, "Doit contenir entre 3 et 16 caractères.")
-        .trim(),
-    surname: string()
-        .required("Veuillez entrer votre prénom.")
-        .min(3, "Doit contenir entre 3 et 16 caractères.")
-        .max(16, "Doit contenir entre 3 et 16 caractères.")
-        .trim(),
-    mail: string()
-        .required("Veuillez entrer votre adresse email")
-        .email("Adresse email invalide.")
-        .trim(),
-    password: string()
-        .required("Veuillez choisir un mot de passe")
-        .min(8, "Doit contenir entre 8 et 16 caractères.")
-        .max(16, "Doit contenir entre 8 et 16 caractères.")
-        .trim(),
-    confirmPassword: string()
-        .required("Merci de bien vouloir confirmer le mot de passe.")
-        .oneOf(
-            [ref("password"), null],
-            "Les mots de passe ne correspondent pas !"
-        ),
-}).required();
-
 export default function FormRegister() {
     const [error, setError] = useState({});
 
@@ -53,21 +25,12 @@ export default function FormRegister() {
         handleSubmit,
         watch,
         formState: { errors },
-    } = useForm({
-        resolver: yupResolver(schema),
-    });
+    } = useForm({});
 
     const [loading, setLoading] = useState(false);
-    const onSubmit = async (data) => {
-        const { name, email, password, confirmPassword } = data;
+    const onSubmit = async () => {
+        const data = getValues();
 
-        // Use validator to avoid XSS attacks.
-        const safeData = {
-            name: validator.escape(name),
-            email: validator.escape(email),
-            password: validator.escape(password),
-            confirmPassword: validator.escape(confirmPassword),
-        };
         console.log(data);
         try {
             setLoading(true);
