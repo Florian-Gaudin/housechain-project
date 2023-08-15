@@ -1,6 +1,39 @@
+import { sign } from "jsonwebtoken";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { cookies } from "next/dist/client/components/headers";
 // import EmailProvider from "next-auth/providers/email";
+
+export async function createCookies(credentials) {
+    // console.log(credentials.username.username);
+    const secret = process.env.JWT_SECRET;
+    const username = credentials.username;
+    const MAX_AGE = 60 * 60 * 24 * 30;
+    const token = sign(
+        {
+            username,
+        },
+        secret,
+        { expiresIn: MAX_AGE }
+    );
+    const outsiteJWTCookie = cookies().set({
+        name: "OutSiteJWT",
+        value: token,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        path: "/",
+        maxAge: MAX_AGE,
+    });
+    const usernameCookie = cookies().set({
+        name: "Username",
+        value: username,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        path: "/",
+        maxAge: MAX_AGE,
+    });
+    return outsiteJWTCookie;
+}
 
 async function Auth(request, context) {
     return NextAuth(request, context, {
@@ -8,54 +41,88 @@ async function Auth(request, context) {
             CredentialsProvider({
                 name: "credentials",
                 authorize: async (credentials) => {
+                    const cookies = await createCookies(credentials);
                     try {
                         // Authenticate user with credentials
-                        const userResponse = await fetch(
-                            `${process.env.NEXT_PUBLIC_API}/api/login_check`,
+                        const userLogin = await fetch(
+                            `${process.env.NEXT_PUBLIC_API}/api/login`,
                             {
                                 headers: {
                                     "Content-Type": "application/json",
+                                    Cookie: cookies,
                                 },
                                 body: JSON.stringify({
                                     username: credentials.username,
-                                    password: credentials.password,
+                                    password_login: credentials.password,
                                 }),
                                 method: "POST",
                             }
                         );
 
-                        const userResponseData = await userResponse.json();
+                        const userLoginResponse = await userLogin.json();
+                        console.log(userLoginResponse, userLogin);
+                        credentials.access_token =
+                            userLoginResponse.access_token;
 
-                        if (
-                            userResponseData.token
-                            // &&
-                            // userResponseData.refresh_token
-                        ) {
-                            const fetchUser = await fetch(
-                                `${process.env.NEXT_PUBLIC_API}/api/me`,
+                        if (userLogin.status === 200) {
+                            const getJwt = await fetch(
+                                `${process.env.NEXT_PUBLIC_API}/api/login_check`,
                                 {
                                     headers: {
-                                        Authorization: `Bearer ${userResponseData.token}`,
                                         "Content-Type": "application/json",
                                     },
-                                    method: "GET",
+                                    body: JSON.stringify({
+                                        username: credentials.username,
+                                        password: credentials.access_token,
+                                    }),
+                                    method: "POST",
                                 }
                             );
-                            const user = await fetchUser.json();
-                            console.log("user dans route.js", user);
-                            return {
-                                accessToken: userResponseData.token,
-                                user: user,
-                            };
-                        }
-                        if (
-                            userResponse.status === 401 &&
-                            userResponseData.message
-                        ) {
-                            throw userResponseData.message;
+                            const getJwtResponse = await getJwt.json();
+                            console.log(
+                                "getjwt",
+                                getJwt,
+                                "getjwtresponse",
+                                getJwtResponse
+                            );
+                            if (
+                                getJwtResponse.token &&
+                                getJwt.status === 200
+                                // &&
+                                // TODO
+                                // getJwtResponse.refresh_token
+                            ) {
+                                const fetchUser = await fetch(
+                                    `${process.env.NEXT_PUBLIC_API}/api/me`,
+                                    {
+                                        headers: {
+                                            Authorization: `Bearer ${getJwtResponse.token}`,
+                                            "Content-Type": "application/json",
+                                        },
+                                        method: "GET",
+                                    }
+                                );
+                                const user = await fetchUser.json();
+                                console.log("user dans route.js", user);
+                                return {
+                                    accessToken: user.token,
+                                    user: user,
+                                };
+                            }
+                            if (
+                                getJwt.status === 401 &&
+                                getJwtResponse.message
+                            ) {
+                                throw getJwt.message;
+                            }
                         }
 
-                        return userResponseData;
+                        if (
+                            userLogin.status === 401 &&
+                            userLoginResponse.message
+                        ) {
+                            throw userLoginResponse.message;
+                        }
                     } catch (e) {
                         throw new Error(e);
                     }

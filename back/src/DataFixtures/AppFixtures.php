@@ -117,9 +117,9 @@ class AppFixtures extends Fixture
             $user->setUtilityTokenTotalAmount('1000.00');
 
             // Encode and set the password for each user
-            $password = 'password'; // You can set your desired password here
-            $hashedPassword = $this->passwordHasher->hashPassword($user, $password);
-            $user->setPassword($hashedPassword);
+            $passwordLogin = 'password'; // You can set your desired password here
+            $hashedPasswordLogin = $this->passwordHasher->hashPassword($user, $passwordLogin);
+            $user->setPasswordLogin($hashedPasswordLogin);
 
             // Randomly assign a role to the user
             $randomRole = rand(1, 3);

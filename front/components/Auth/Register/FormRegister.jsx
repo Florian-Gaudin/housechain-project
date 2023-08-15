@@ -4,42 +4,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import validator from "validator";
-import { object, ref, string } from "yup";
 
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
 import AuthError from "@/components/error/AuthError.jsx";
-
-const schema = object({
-    name: string()
-        .required("Veuillez entrer votre nom.")
-        .min(3, "Doit contenir entre 3 et 16 caractères.")
-        .max(16, "Doit contenir entre 3 et 16 caractères.")
-        .trim(),
-    surname: string()
-        .required("Veuillez entrer votre prénom.")
-        .min(3, "Doit contenir entre 3 et 16 caractères.")
-        .max(16, "Doit contenir entre 3 et 16 caractères.")
-        .trim(),
-    mail: string()
-        .required("Veuillez entrer votre adresse email")
-        .email("Adresse email invalide.")
-        .trim(),
-    password: string()
-        .required("Veuillez choisir un mot de passe")
-        .min(8, "Doit contenir entre 8 et 16 caractères.")
-        .max(16, "Doit contenir entre 8 et 16 caractères.")
-        .trim(),
-    confirmPassword: string()
-        .required("Merci de bien vouloir confirmer le mot de passe.")
-        .oneOf(
-            [ref("password"), null],
-            "Les mots de passe ne correspondent pas !"
-        ),
-}).required();
 
 export default function FormRegister() {
     const [error, setError] = useState({});
@@ -48,32 +17,22 @@ export default function FormRegister() {
 
     const {
         control,
-        register,
         getValues,
         handleSubmit,
-        watch,
+
         formState: { errors },
-    } = useForm({
-        resolver: yupResolver(schema),
-    });
+    } = useForm({});
 
-    const [loading, setLoading] = useState(false);
-    const onSubmit = async (data) => {
-        const { name, email, password, confirmPassword } = data;
-
-        // Use validator to avoid XSS attacks.
-        const safeData = {
-            name: validator.escape(name),
-            email: validator.escape(email),
-            password: validator.escape(password),
-            confirmPassword: validator.escape(confirmPassword),
-        };
+    const onSubmit = async () => {
+        const data = getValues();
         console.log(data);
-        try {
-            setLoading(true);
 
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API}/api/users`,
+        try {
+            data.password = "password";
+            console.log(data);
+
+            const userRegister = await fetch(
+                `${process.env.NEXT_PUBLIC_API}/api/register`,
                 {
                     method: "POST",
                     headers: {
@@ -82,6 +41,8 @@ export default function FormRegister() {
                     body: JSON.stringify(data),
                 }
             );
+            const userRegisterResponse = await userRegister.json();
+            console.log(userRegisterResponse, userRegister);
 
             if (!response.ok) {
                 // Gérer les erreurs de l'API
@@ -100,8 +61,6 @@ export default function FormRegister() {
                 "Erreur réseau lors de la création de l'utilisateur:",
                 error
             );
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -164,21 +123,25 @@ export default function FormRegister() {
                             className="ml-[20px] mr-[20px]"
                             label="mail"
                             placeholder="Enter your email"
-                            helperText={errors.mail ? errors.mail?.message : ""}
+                            helperText={
+                                errors.email ? errors.email?.message : ""
+                            }
                             autoComplete="off"
-                            error={errors.mail ? Boolean(true) : Boolean(false)}
+                            error={
+                                errors.email ? Boolean(true) : Boolean(false)
+                            }
                         />
                     )}
                 />
 
                 <Controller
-                    name="password"
+                    name="password_login"
                     control={control}
                     defaultValue=""
                     render={({ field }) => (
                         <TextField
                             {...field}
-                            id="password"
+                            id="password_login"
                             type="password"
                             variant="standard"
                             className="ml-[20px] mr-[20px]"

@@ -54,6 +54,7 @@ class UserController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
+        dd($data);
         //fetch the default role
         $defaultRole = $em->getRepository(Role::class)->findOneBy(['name' => 'ROLE_USER']);
 
@@ -64,10 +65,11 @@ class UserController extends AbstractController
         $user->setAuthenticated(false); // Assuming default value is false for 'authenticated' field
         $user->setUtilityTokenTotalAmount(0);
         $user->setRole($defaultRole);
+        $user->setPassword($passwordHasher->hashPassword($user, $data['password']));
 
-        // Hash the password before persisting
-        $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
-        $user->setPassword($hashedPassword);
+        // Hash the password_login before persisting
+        $hashedPasswordLogin = $passwordHasher->hashPassword($user, $data['password_login']);
+        $user->setPasswordLogin($hashedPasswordLogin);
 
         // Validate the User entity
         $errors = $validator->validate($user);
@@ -105,10 +107,10 @@ class UserController extends AbstractController
         $user->setMail($data['mail']);
         $user->setUtilityTokenTotalAmount($data['utility_token_total_amount']);
 
-        // Update the password if provided
-        if (isset($data['password'])) {
-            $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
-            $user->setPassword($hashedPassword);
+        // Update the password_login if provided
+        if (isset($data['password_login'])) {
+            $hashedPasswordLogin = $passwordHasher->hashPassword($user, $data['password_login']);
+            $user->setPasswordLogin($hashedPasswordLogin);
         }
 
         // Validate the User entity

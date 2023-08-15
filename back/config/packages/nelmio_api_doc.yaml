@@ -7,23 +7,57 @@ nelmio_api_doc:
         paths: # Déplacez le nœud "paths" ici, sous "documentation"
             /api/login_check:
                 post:
-                    operationId: postCredentialsItem
+                    operationId: postJwtCredentials
                     tags:
                         - Token
-                    summary: Permet d'obtenir le token JWT pour se logger.
+                    summary: Permet d'obtenir le token JWT pour accéder à l'API.
+                    requestBody:
+                        description: Crée un nouveau token JWT à partir de l'access_token
+                        content:
+                            application/json:
+                                schema:
+                                    $ref: "#/components/schemas/JwtCredentials"
+                    responses:
+                        "200":
+                            description: Récupère le token JWT
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: "#/components/schemas/Token"
+            /api/login:
+                post:
+                    operationId: postLoginCredentials
+                    tags:
+                        - Token
+                    summary: Permet de se connecter avec credentials (username, password).
                     requestBody:
                         description: Crée un nouveau token JWT
                         content:
                             application/json:
                                 schema:
-                                    $ref: '#/components/schemas/Credentials'
+                                    $ref: "#/components/schemas/LoginCredentials"
                     responses:
-                        '200':
+                        "200":
                             description: Récupère le token JWT
                             content:
                                 application/json:
                                     schema:
-                                        $ref: '#/components/schemas/Token'
+                                        $ref: "#/components/schemas/Token"
+            /api/register:
+                post:
+                    operationId: postRegister
+                    tags:
+                        - Token
+                    summary: Permet de créer un compte
+                    requestBody:
+                        description: Créer un nouveau compte user
+                        content:
+                            application/json:
+                                schema:
+                                    $ref: "#/components/schemas/RegisterCredentials"
+                    responses:
+                        "200":
+                            description: Crée un compte
         components:
             schemas:
                 Token:
@@ -32,13 +66,31 @@ nelmio_api_doc:
                         token:
                             type: string
                             readOnly: true
-                Credentials:
+                JwtCredentials:
                     type: object
                     properties:
                         username:
                             type: string
                             default: admin@housechain.com
                         password:
+                            type: string
+                            default: password (access_token)
+                LoginCredentials:
+                    type: object
+                    properties:
+                        username:
+                            type: string
+                            default: admin@housechain.com
+                        password_login:
+                            type: string
+                            default: password
+                RegisterCredentials:
+                    type: object
+                    properties:
+                        username:
+                            type: string
+                            default: admin@housechain.com
+                        password_login:
                             type: string
                             default: password
             securitySchemes:
