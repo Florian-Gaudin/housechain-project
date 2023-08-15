@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Role;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +18,6 @@ class RegisterController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        dd($data);
         //fetch the default role
         $defaultRole = $em->getRepository(Role::class)->findOneBy(['name' => 'ROLE_USER']);
 
@@ -31,7 +31,7 @@ class RegisterController extends AbstractController
         $user->setPassword($passwordHasher->hashPassword($user, $data['password']));
 
         // Hash the password_login before persisting
-        $hashedPasswordLogin = $passwordHasher->hashPassword($user, $data['password_login']);
+        $hashedPasswordLogin = $passwordHasher->hashPassword($user, $data['password']);
         $user->setPasswordLogin($hashedPasswordLogin);
 
         // Validate the User entity

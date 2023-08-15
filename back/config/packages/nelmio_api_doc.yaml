@@ -87,10 +87,16 @@ nelmio_api_doc:
                 RegisterCredentials:
                     type: object
                     properties:
-                        username:
+                        name:
                             type: string
-                            default: admin@housechain.com
-                        password_login:
+                            default: name
+                        surname:
+                            type: string
+                            default: surname
+                        mail:
+                            type: string
+                            default: mail@housechain.com
+                        password:
                             type: string
                             default: password
             securitySchemes:

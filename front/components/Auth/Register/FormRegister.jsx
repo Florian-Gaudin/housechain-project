@@ -4,11 +4,42 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import validator from "validator";
+import { object, ref, string } from "yup";
 
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
 import AuthError from "@/components/error/AuthError.jsx";
+
+const schema = object({
+    name: string()
+        .required("Veuillez entrer votre nom.")
+        .min(3, "Doit contenir entre 3 et 16 caractères.")
+        .max(16, "Doit contenir entre 3 et 16 caractères.")
+        .trim(),
+    surname: string()
+        .required("Veuillez entrer votre prénom.")
+        .min(3, "Doit contenir entre 3 et 16 caractères.")
+        .max(16, "Doit contenir entre 3 et 16 caractères.")
+        .trim(),
+    mail: string()
+        .required("Veuillez entrer votre adresse email")
+        .email("Adresse email invalide.")
+        .trim(),
+    password: string()
+        .required("Veuillez choisir un mot de passe")
+        .min(8, "Doit contenir entre 8 et 16 caractères.")
+        .max(16, "Doit contenir entre 8 et 16 caractères.")
+        .trim(),
+    confirmPassword: string()
+        .required("Merci de bien vouloir confirmer le mot de passe.")
+        .oneOf(
+            [ref("password"), null],
+            "Les mots de passe ne correspondent pas !"
+        ),
+}).required();
 
 export default function FormRegister() {
     const [error, setError] = useState({});
@@ -17,21 +48,32 @@ export default function FormRegister() {
 
     const {
         control,
+        register,
         getValues,
         handleSubmit,
-
+        watch,
         formState: { errors },
-    } = useForm({});
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
 
-    const onSubmit = async () => {
-        const data = getValues();
-        console.log(data);
+    const [loading, setLoading] = useState(false);
+    const onSubmit = async (data) => {
+        const { name, surname, mail, password, confirmPassword } = data;
 
+        // Use validator to avoid XSS attacks.
+        const safeData = {
+            name: validator.escape(name),
+            surname: validator.escape(surname),
+            mail: validator.escape(mail),
+            password: validator.escape(password),
+            confirmPassword: validator.escape(confirmPassword),
+        };
         try {
-            data.password = "password";
+            setLoading(true);
             console.log(data);
 
-            const userRegister = await fetch(
+            const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API}/api/register`,
                 {
                     method: "POST",
@@ -41,8 +83,9 @@ export default function FormRegister() {
                     body: JSON.stringify(data),
                 }
             );
-            const userRegisterResponse = await userRegister.json();
-            console.log(userRegisterResponse, userRegister);
+
+            const responseData = await response.json();
+            console.log(response, responseData);
 
             if (!response.ok) {
                 // Gérer les erreurs de l'API
@@ -61,6 +104,8 @@ export default function FormRegister() {
                 "Erreur réseau lors de la création de l'utilisateur:",
                 error
             );
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -135,13 +180,13 @@ export default function FormRegister() {
                 />
 
                 <Controller
-                    name="password_login"
+                    name="password"
                     control={control}
                     defaultValue=""
                     render={({ field }) => (
                         <TextField
                             {...field}
-                            id="password_login"
+                            id="password"
                             type="password"
                             variant="standard"
                             className="ml-[20px] mr-[20px]"
