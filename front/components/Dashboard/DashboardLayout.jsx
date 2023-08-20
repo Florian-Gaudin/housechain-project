@@ -22,6 +22,8 @@ import "swiper/css/scrollbar";
 import { FreeMode, Scrollbar, Mousewheel } from "swiper/modules";
 
 const DashboardLayout = () => {
+    //placement bouton connexion
+    const origin = "origin-origin-bottom-left left-10 bottom-14";
     // contenu contextuel de la sidebar menu
     const propertiesMenu = <PropertiesMenu />;
     const myPropertiesMenu = <MyPropertiesMenu />;
@@ -111,8 +113,9 @@ const DashboardLayout = () => {
                                 content={indexSvg.wallet}
                             />
                         </div>
-
-                        <UserComponent />
+                        <div className="relative">
+                            <UserComponent origin={origin} />
+                        </div>
                     </nav>
 
                     <SidebarMenu isSidebarOpen={state.isSidebarOpen}>

@@ -1,11 +1,11 @@
 "use client";
-import { usePropertyFilters } from "@/services/reducer/propertyFilterContext";
 import { useEffect, useState } from "react";
+import StorePropertyCard from "./StorePropertyCard";
+import Loader from "@/components/Loader/Loader";
 
-const PropertiesMenu = () => {
-    const { filters, setFilters, filteredData, setFilteredData } =
-        usePropertyFilters();
+const ShowProperties = () => {
     const [data, setData] = useState([]);
+    const [filter, setFilter] = useState(data);
     const [loading, setLoading] = useState(false);
     const [cities, setCities] = useState([]);
     const [types, setTypes] = useState([]);
@@ -52,9 +52,9 @@ const PropertiesMenu = () => {
                 setMaxYield(max);
                 setSelectedYield(min);
 
-                // on initialise data et filteredData
+                // on initialise data et filter
                 setData(propertiesDataResponse);
-                setFilteredData(propertiesDataResponse);
+                setFilter(propertiesDataResponse);
                 //on récupère la liste des villes
                 const allCities = propertiesDataResponse.map(
                     (property) => property.city
@@ -121,26 +121,14 @@ const PropertiesMenu = () => {
             updatedYield,
             updatedStatus
         );
+        setFilter(updatedList);
         setSelectedCity(updatedCity);
         setSelectedType(updatedType);
         setSelectedYield(updatedYield);
         setSelectedStatus(updatedStatus);
 
-        setFilters({
-            ...filters,
-            selectedCity: updatedCity,
-            selectedType: updatedType,
-            selectedStatus: updatedStatus,
-            selectedYield: updatedYield,
-        });
-        setFilteredData(updatedList);
-        console.log(
-            filteredData,
-            updatedCity,
-            updatedType,
-            updatedStatus,
-            updatedYield
-        );
+        console.log(filter, updatedCity, updatedType, updatedStatus);
+        // Appliquer d'autres filtres de la même manière
     };
 
     const applyFilters = (city, type, yieldValue, status) => {
@@ -170,97 +158,109 @@ const PropertiesMenu = () => {
             );
         }
 
-        console.log("filteredlist", filteredList);
         // Appliquer d'autres filtres supplémentaires ici
 
         return filteredList;
     };
 
     return (
-        <div className="flex flex-col justify-between my-5 p-3 gap-5">
-            <select
-                name="status"
-                className="flex flex-col"
-                value={selectedStatus}
-                onChange={(event) =>
-                    filterProperties(event.target.value, "status")
-                }
-            >
-                <option value="">Tous</option>
-                {status.map((status, index) => (
-                    <option key={index} value={status}>
-                        {status}
-                    </option>
-                ))}
-            </select>
-            <select
-                name="cities"
-                className="flex flex-col"
-                value={selectedCity}
-                onChange={(event) =>
-                    filterProperties(event.target.value, "city")
-                }
-            >
-                <option value="">Toutes</option>
-                {cities.map((city, index) => (
-                    <option key={index} value={city}>
-                        {city}
-                    </option>
-                ))}
-            </select>
-            <select
-                name="types"
-                className="flex flex-col"
-                value={selectedType}
-                onChange={(event) =>
-                    filterProperties(event.target.value, "type")
-                }
-            >
-                <option value="">Toutes</option>
-                {types.map((type, index) => (
-                    <option key={index} value={type}>
-                        {type}
-                    </option>
-                ))}
-            </select>
-            <div className="flex flex-col">
-                <div className="flex justify-around">
-                    <span>{minYield}</span>
-                    <span>{selectedYield}</span>
-                    <span>{maxYield}</span>
-                </div>
-                <input
-                    type="range"
-                    min={minYield}
-                    max={maxYield}
-                    value={selectedYield}
+        <>
+            <div className="flex flex-row justify-between my-5 p-3">
+                <select
+                    name="status"
+                    className="flex flex-col"
+                    value={selectedStatus}
                     onChange={(event) =>
-                        filterProperties(event.target.value, "yield")
+                        filterProperties(event.target.value, "status")
                     }
-                />
+                >
+                    <option value="">Tous</option>
+                    {status.map((status, index) => (
+                        <option key={index} value={status}>
+                            {status}
+                        </option>
+                    ))}
+                </select>
+                <select
+                    name="cities"
+                    className="flex flex-col"
+                    value={selectedCity}
+                    onChange={(event) =>
+                        filterProperties(event.target.value, "city")
+                    }
+                >
+                    <option value="">Toutes</option>
+                    {cities.map((city, index) => (
+                        <option key={index} value={city}>
+                            {city}
+                        </option>
+                    ))}
+                </select>
+                <select
+                    name="types"
+                    className="flex flex-col"
+                    value={selectedType}
+                    onChange={(event) =>
+                        filterProperties(event.target.value, "type")
+                    }
+                >
+                    <option value="">Toutes</option>
+                    {types.map((type, index) => (
+                        <option key={index} value={type}>
+                            {type}
+                        </option>
+                    ))}
+                </select>
+                <div className="flex flex-col">
+                    <div className="flex justify-around">
+                        <span>{minYield}</span>
+                        <span>{selectedYield}</span>
+                        <span>{maxYield}</span>
+                    </div>
+                    <input
+                        type="range"
+                        min={minYield}
+                        max={maxYield}
+                        value={selectedYield}
+                        onChange={(event) =>
+                            filterProperties(event.target.value, "yield")
+                        }
+                    />
+                </div>
+                <div className="bg-white">
+                    <button
+                        className="p-3 bg-white"
+                        onClick={() => filterProperties("", "all")}
+                    >
+                        Toutes les propriétés
+                    </button>
+                    <button
+                        className="p-3 bg-white"
+                        onClick={() => filterProperties("new")}
+                    >
+                        Les plus récentes
+                    </button>
+                    <button
+                        className="p-3 bg-white"
+                        onClick={() => filterProperties("like")}
+                    >
+                        Les plus aimées
+                    </button>
+                </div>
             </div>
-            <div className="bg-white">
-                <button
-                    className="p-3 bg-white"
-                    onClick={() => filterProperties("", "all")}
-                >
-                    Toutes les propriétés
-                </button>
-                <button
-                    className="p-3 bg-white"
-                    onClick={() => filterProperties("new")}
-                >
-                    Les plus récentes
-                </button>
-                <button
-                    className="p-3 bg-white"
-                    onClick={() => filterProperties("like")}
-                >
-                    Les plus aimées
-                </button>
+            <div className="flex flex-wrap">
+                {loading ? (
+                    <Loader />
+                ) : (
+                    filter.map((property) => (
+                        <StorePropertyCard
+                            key={property.id}
+                            property={property}
+                        />
+                    ))
+                )}
             </div>
-        </div>
+        </>
     );
 };
-
-export default PropertiesMenu;
+export default ShowProperties;
