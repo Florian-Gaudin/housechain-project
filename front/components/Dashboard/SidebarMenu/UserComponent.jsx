@@ -35,7 +35,7 @@ const UserComponent = ({
     return (
         <div
             ref={userComponentRef}
-            className="relative flex items-center flex-shrink-0 transform transition-transform duration-1000 ease-in-out opacity-80 hover:opacity-100 hover:scale-110 shadow-lg rounded-lg my-auto cursor-pointer"
+            className="relative flex items-center flex-shrink-0 transform transition-transform duration-1000 ease-in-out opacity-80 hover:opacity-100 hover:scale-110 shadow-lg rounded-lg my-auto cursor-pointer mb-5"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             onClick={toggleUserMenu}

@@ -14,6 +14,7 @@ import { usercircle } from "./usercircle";
 import { wallet } from "./wallet";
 import { contract } from "./contract";
 import { house } from "./house";
+import { settings } from "./settings";
 
 export default {
     facebook,
@@ -32,4 +33,5 @@ export default {
     wallet,
     contract,
     house,
+    settings,
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import SidebarMenu from "./SidebarMenu/SidebarMenu";
 import OpenSidebarMenuButton from "./SidebarMenu/OpenSidebarMenuButton";
 import { SidebarContext } from "@/services/reducer/sidebar.reducer";
@@ -11,15 +11,9 @@ import MenuButton from "../Fields/MenuButton";
 import PropertiesMenu from "./SidebarMenu/PropertiesMenu";
 import MyPropertiesMenu from "./SidebarMenu/MyPropertiesMenu";
 import MyWalletMenu from "./SidebarMenu/MyWalletMenu";
-import StoreProperties from "./Store/StoreProperties";
-import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/scrollbar";
-// import Swiper modules
-import { FreeMode, Scrollbar, Mousewheel } from "swiper/modules";
+import SettingsButton from "./SidebarMenu/SettingsButton";
+import ShowProperties from "./Store/ShowProperties";
+import MainTitle from "./MainTitle";
 
 const DashboardLayout = () => {
     //placement bouton connexion
@@ -30,19 +24,20 @@ const DashboardLayout = () => {
     const myWalletMenu = <MyWalletMenu />;
 
     // contenu contextuel du main
-    const store = <StoreProperties />;
+    const store = <ShowProperties />;
+    const storeTitle = <MainTitle title={"Nos propriétés"} />;
     const myProperties = <h3 className="text-white">My properties</h3>;
+    const myPropertiesTitle = <MainTitle title={"Mes investissements"} />;
     const myWallet = <h3 className="text-white">My wallet</h3>;
+    const myWalletTitle = <MainTitle title={"Mon portefeuille"} />;
 
     const { state, dispatch } = useContext(SidebarContext);
-    // const [isSidebarOpen, setSidebarOpen] = useState(false);
-    // const [sidebarContent, setSidebarContent] = useState("");
-    // const [mainContent, setMainContent] = useState(store);
-    const toggleSidebar = (sidebarContent, mainContent) => {
+    const toggleSidebar = (sidebarContent, mainContent, mainTitle) => {
         dispatch({
             type: actionTypes.TOGGLE_SIDEBAR,
             sidebarContent: sidebarContent,
             mainContent: mainContent,
+            mainTitle: mainTitle,
         });
     };
 
@@ -81,13 +76,14 @@ const DashboardLayout = () => {
                             </a>
                         </div>
                         {/* BOUTONS OUVERTURE DES MENU SIDEBAR */}
-                        <div className="flex flex-col items-center flex-1 p-2 mt-12 space-y-16">
+                        <div className="flex flex-col items-center flex-1 p-2 mt-12 gap-4 space-y-16">
                             <OpenSidebarMenuButton
                                 onClick={() =>
                                     dispatch({
                                         type: "TOGGLE_SIDEBAR",
                                         sidebarContent: propertiesMenu,
                                         mainContent: store,
+                                        mainTitle: storeTitle,
                                     })
                                 }
                                 content={indexSvg.house}
@@ -98,6 +94,7 @@ const DashboardLayout = () => {
                                         type: "TOGGLE_SIDEBAR",
                                         sidebarContent: myPropertiesMenu,
                                         mainContent: myProperties,
+                                        mainTitle: myPropertiesTitle,
                                     })
                                 }
                                 content={indexSvg.contract}
@@ -108,42 +105,33 @@ const DashboardLayout = () => {
                                         type: "TOGGLE_SIDEBAR",
                                         sidebarContent: myWalletMenu,
                                         mainContent: myWallet,
+                                        mainTitle: myWalletTitle,
                                     })
                                 }
                                 content={indexSvg.wallet}
                             />
                         </div>
-                        <div className="relative">
+                        <div className="relative mb-5">
                             <UserComponent origin={origin} />
                         </div>
+                        <SettingsButton />
                     </nav>
 
                     <SidebarMenu isSidebarOpen={state.isSidebarOpen}>
                         {state.sidebarContent}
                     </SidebarMenu>
                 </div>
-                <div className="flex flex-col flex-1">
-                    <div className="flex flex-1">
+                <div className="">
+                    {state.mainTitle !== null ? state.mainTitle : storeTitle}
+                    <div className="">
                         {/* <!-- Main --> */}
-                        <Swiper
-                            width={100}
-                            height={10}
-                            direction={"vertical"}
-                            slidesPerView={"auto"}
-                            freeMode={true}
-                            scrollbar={true}
-                            mousewheel={true}
-                            modules={[FreeMode, Scrollbar, Mousewheel]}
-                            className="mySwiper"
-                        >
-                            <SwiperSlide>
-                                <main className="flex items-center justify-center flex-1 px-4 py-8">
-                                    {state.mainContent !== null
-                                        ? state.mainContent
-                                        : store}
-                                </main>
-                            </SwiperSlide>
-                        </Swiper>
+                        <main className="flex items-center justify-center flex-1 px-4 py-8">
+                            <div className="max-h-[80vh] overflow-y-auto">
+                                {state.mainContent !== null
+                                    ? state.mainContent
+                                    : store}
+                            </div>
+                        </main>
                     </div>
                 </div>
             </div>

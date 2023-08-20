@@ -4,10 +4,9 @@ import StorePropertyCard from "./StorePropertyCard";
 import Loader from "@/components/Loader/Loader";
 import { usePropertyFilters } from "@/services/reducer/propertyFilterContext";
 
-const ShowProperties = ({ filteredProperties }) => {
+const ShowProperties = () => {
     const { filteredData, setFilteredData } = usePropertyFilters();
     const [data, setData] = useState([]);
-    const [filter, setFilter] = useState(data);
     const [loading, setLoading] = useState(false);
     let componentMounted = false;
 
@@ -35,95 +34,8 @@ const ShowProperties = ({ filteredProperties }) => {
         getProperties();
     }, []);
 
-    // useEffect(() => {
-    //     setFilter(filteredProperties);
-    // }, [filteredProperties]);
-
     return (
         <>
-            {/* <div className="flex flex-row justify-between my-5 p-3">
-                <select
-                    name="status"
-                    className="flex flex-col"
-                    value={selectedStatus}
-                    onChange={(event) =>
-                        filterProperties(event.target.value, "status")
-                    }
-                >
-                    <option value="">Tous</option>
-                    {status.map((status, index) => (
-                        <option key={index} value={status}>
-                            {status}
-                        </option>
-                    ))}
-                </select>
-                <select
-                    name="cities"
-                    className="flex flex-col"
-                    value={selectedCity}
-                    onChange={(event) =>
-                        filterProperties(event.target.value, "city")
-                    }
-                >
-                    <option value="">Toutes</option>
-                    {cities.map((city, index) => (
-                        <option key={index} value={city}>
-                            {city}
-                        </option>
-                    ))}
-                </select>
-                <select
-                    name="types"
-                    className="flex flex-col"
-                    value={selectedType}
-                    onChange={(event) =>
-                        filterProperties(event.target.value, "type")
-                    }
-                >
-                    <option value="">Toutes</option>
-                    {types.map((type, index) => (
-                        <option key={index} value={type}>
-                            {type}
-                        </option>
-                    ))}
-                </select>
-                <div className="flex flex-col">
-                    <div className="flex justify-around">
-                        <span>{minYield}</span>
-                        <span>{selectedYield}</span>
-                        <span>{maxYield}</span>
-                    </div>
-                    <input
-                        type="range"
-                        min={minYield}
-                        max={maxYield}
-                        value={selectedYield}
-                        onChange={(event) =>
-                            filterProperties(event.target.value, "yield")
-                        }
-                    />
-                </div>
-                <div className="bg-white">
-                    <button
-                        className="p-3 bg-white"
-                        onClick={() => filterProperties("", "all")}
-                    >
-                        Toutes les propriétés
-                    </button>
-                    <button
-                        className="p-3 bg-white"
-                        onClick={() => filterProperties("new")}
-                    >
-                        Les plus récentes
-                    </button>
-                    <button
-                        className="p-3 bg-white"
-                        onClick={() => filterProperties("like")}
-                    >
-                        Les plus aimées
-                    </button>
-                </div>
-            </div> */}
             <div className="flex flex-wrap">
                 {loading ? (
                     <Loader />

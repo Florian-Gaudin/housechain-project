@@ -18,6 +18,7 @@ const sidebarReducer = (state, action) => {
                 isSidebarOpen: !state.isSidebarOpen,
                 sidebarContent: action.sidebarContent,
                 mainContent: action.mainContent,
+                mainTitle: action.mainTitle,
             };
         default:
             return state;
@@ -30,6 +31,7 @@ const SidebarProvider = ({ children }) => {
         isSidebarOpen: false,
         sidebarContent: null,
         mainContent: null,
+        mainTitle: null,
     };
 
     const [state, dispatch] = useReducer(sidebarReducer, initialState);

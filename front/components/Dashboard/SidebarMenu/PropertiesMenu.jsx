@@ -178,24 +178,62 @@ const PropertiesMenu = () => {
 
     return (
         <div className="flex flex-col justify-between my-5 p-3 gap-5">
+            <div className="bg-white pt-5 flex justify-center flex-col gap-3">
+                <button
+                    className="p-3 bg-white hover:scale-110 rounded-lg uppercase font-bold text-md bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text shadow-lg"
+                    onClick={() => filterProperties("", "all")}
+                >
+                    Voir tout
+                </button>
+                <button
+                    className="p-3 bg-white hover:scale-110 rounded-lg uppercase font-bold text-md bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text shadow-lg"
+                    onClick={() => filterProperties("new")}
+                >
+                    Les + récentes
+                </button>
+                <button
+                    className="p-3 bg-white hover:scale-110 rounded-lg uppercase font-bold text-md bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text shadow-lg"
+                    onClick={() => filterProperties("like")}
+                >
+                    Les plus aimées
+                </button>
+            </div>
+            <label
+                className="pt-5 text-sm font-title font-bold uppercase bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text"
+                htmlFor="status"
+            >
+                Statut :
+            </label>
             <select
                 name="status"
-                className="flex flex-col"
+                className="border border-bg p-3 rounded-lg"
                 value={selectedStatus}
                 onChange={(event) =>
                     filterProperties(event.target.value, "status")
                 }
             >
-                <option value="">Tous</option>
+                <option className="p-1" value="">
+                    Tous
+                </option>
                 {status.map((status, index) => (
-                    <option key={index} value={status}>
+                    <option
+                        className="p-1 h-5 text-bg"
+                        key={index}
+                        value={status}
+                    >
                         {status}
                     </option>
                 ))}
             </select>
+            <label
+                className="mt-5 pt-5 text-sm font-title font-bold uppercase bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text"
+                htmlFor="cities"
+            >
+                Ville :
+            </label>
             <select
                 name="cities"
-                className="flex flex-col"
+                className="border border-bg p-3 rounded-lg"
                 value={selectedCity}
                 onChange={(event) =>
                     filterProperties(event.target.value, "city")
@@ -208,9 +246,15 @@ const PropertiesMenu = () => {
                     </option>
                 ))}
             </select>
+            <label
+                className="mt-5 pt-5 text-sm font-title font-bold uppercase bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text"
+                htmlFor="types"
+            >
+                Type de bien :
+            </label>
             <select
                 name="types"
-                className="flex flex-col"
+                className="border border-bg p-3 rounded-lg"
                 value={selectedType}
                 onChange={(event) =>
                     filterProperties(event.target.value, "type")
@@ -223,41 +267,28 @@ const PropertiesMenu = () => {
                     </option>
                 ))}
             </select>
-            <div className="flex flex-col">
+            <label
+                className="mt-5 pt-5 text-sm font-title font-bold uppercase bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text"
+                htmlFor="yield"
+            >
+                Rendement annuel :
+            </label>
+            <div className="flex flex-col text-center">
+                <span className="text-sm">Votre choix : {selectedYield}%</span>
                 <div className="flex justify-around">
-                    <span>{minYield}</span>
-                    <span>{selectedYield}</span>
-                    <span>{maxYield}</span>
+                    <span className="text-sm">Min: {minYield}%</span>
+                    <input
+                        name="yield"
+                        type="range"
+                        min={minYield}
+                        max={maxYield}
+                        value={selectedYield}
+                        onChange={(event) =>
+                            filterProperties(event.target.value, "yield")
+                        }
+                    />
+                    <span className="text-sm">Max: {maxYield}%</span>
                 </div>
-                <input
-                    type="range"
-                    min={minYield}
-                    max={maxYield}
-                    value={selectedYield}
-                    onChange={(event) =>
-                        filterProperties(event.target.value, "yield")
-                    }
-                />
-            </div>
-            <div className="bg-white">
-                <button
-                    className="p-3 bg-white"
-                    onClick={() => filterProperties("", "all")}
-                >
-                    Toutes les propriétés
-                </button>
-                <button
-                    className="p-3 bg-white"
-                    onClick={() => filterProperties("new")}
-                >
-                    Les plus récentes
-                </button>
-                <button
-                    className="p-3 bg-white"
-                    onClick={() => filterProperties("like")}
-                >
-                    Les plus aimées
-                </button>
             </div>
         </div>
     );
