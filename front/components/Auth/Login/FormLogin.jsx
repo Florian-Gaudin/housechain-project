@@ -13,11 +13,6 @@ import { useSession } from "next-auth/react";
 export default function FormLogin() {
     const { data: session } = useSession();
     const router = useRouter();
-    useEffect(() => {
-        if (session && session.user) {
-            router.push("/");
-        }
-    }, [session]);
     const {
         register,
         handleSubmit,
@@ -27,11 +22,20 @@ export default function FormLogin() {
     const [loading, setLoading] = useState(false);
     const [decodedCallbackURL, setDecodedCallbackURL] = useState("/"); // url de redirection par défaut
 
+    useEffect(() => {
+        if (session && session.user) {
+            router.push(decodedCallbackURL);
+        }
+    }, [session]);
+
     // rediriger l'utilisateur sur la page demandée avant le login
     useEffect(() => {
-        if (typeof window !== "undefined") {
+        const currentURL = window.location.href;
+        if (currentURL !== `http://localhost:3000/login`) {
+            // impossible de parametrer un env PUBLIC_URL ???
+            // PUBLIC_URL = undefined
+            console.log("hello", `${process.env.PUBLIC_URL}/login`, currentURL);
             // Obtenir l'URL actuelle de la page
-            const currentURL = window.location.href;
 
             // Rechercher le paramètre "callbackUrl="
             const callbackParam = "callbackUrl=";
@@ -53,9 +57,11 @@ export default function FormLogin() {
                     );
                 }
                 setDecodedCallbackURL(decodedCallbackURL);
+                console.log(decodedCallbackURL);
             }
         }
     }, []);
+    // useEffect(() => {}, []);
 
     const onSubmit = (data) => {
         console.log(data);

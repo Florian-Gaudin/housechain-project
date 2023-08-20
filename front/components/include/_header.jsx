@@ -1,3 +1,4 @@
+"use client";
 import Logo from "../Homepage/Logo";
 import MenuButton from "../Fields/MenuButton";
 import "../../styles/components/_homepageHeader.scss";

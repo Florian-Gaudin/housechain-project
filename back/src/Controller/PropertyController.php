@@ -48,7 +48,7 @@ class PropertyController extends AbstractController
     public function getPropertiesList(PropertyRepository $propertyRepository, Request $request, TagAwareCacheInterface $cache, SerializerInterface $serializer): JsonResponse
     {
         $page = $request->get('page', 1);
-        $limit = $request->get('limit', 10);
+        $limit = $request->get('limit', 100);
 
         $idCache = "getAllProperties-" . $page . "-" . $limit;
         $jsonPropertiesList = $cache->get($idCache, function (ItemInterface $item) use ($propertyRepository, $page, $limit, $serializer) {

@@ -60,7 +60,14 @@ class Property
     private ?Type $type = null;
 
     #[ORM\OneToMany(mappedBy: 'property', targetEntity: SecurityToken::class)]
+    #[Groups(["getProperties"])]
     private Collection $securityTokens;
+
+    #[ORM\ManyToOne(inversedBy: 'properties', cascade: ["persist"])]
+    #[Groups(["getProperties"])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: "Le statut de la propriété est obligatoire")]
+    private ?Status $status = null;
 
     public function __construct()
     {
@@ -201,6 +208,18 @@ class Property
                 $securityToken->setProperty(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?Status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?Status $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

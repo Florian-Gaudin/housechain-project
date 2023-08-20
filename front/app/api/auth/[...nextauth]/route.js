@@ -11,6 +11,7 @@ const GOOGLE_AUTHORIZATION_URL =
         prompt: "consent",
         access_type: "offline",
         response_type: "code",
+        // content_type: "application/x-www-form-urlencoded",
     });
 
 export async function createCookies(credentials) {

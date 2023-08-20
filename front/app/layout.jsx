@@ -1,6 +1,10 @@
+"use client";
 import Header from "@/components/Include/_header";
 import "../styles/globals.scss";
 import SessionProvider from "@/context/NextAuthContext/SessionProvider.jsx";
+import { Provider } from "react-redux";
+import store from "@/services/reducer/store";
+import { SidebarProvider } from "@/services/reducer/sidebar.reducer";
 
 export default function RootLayout({ children }) {
     return (
@@ -14,8 +18,9 @@ export default function RootLayout({ children }) {
             </head>
             <body className="relative flex flex-col min-h-screen">
                 <SessionProvider>
-                    <Header />
-                    {children}
+                    <Provider store={store}>
+                        <SidebarProvider>{children}</SidebarProvider>
+                    </Provider>
                 </SessionProvider>
             </body>
         </html>

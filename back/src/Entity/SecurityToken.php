@@ -15,31 +15,31 @@ class SecurityToken
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['getSecurityTokenWallets','getUserSecurityTokenWallets'])]
+    #[Groups(['getProperties', 'getSecurityTokenWallets','getUserSecurityTokenWallets'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "The stName cannot be blank.")]
     #[Assert\Length(max: 255, maxMessage: "The stName cannot be longer than {{ limit }} characters.")]
-    #[Groups(['getSecurityTokenWallets','getUserSecurityTokenWallets'])]
+    #[Groups(['getProperties', 'getSecurityTokenWallets','getUserSecurityTokenWallets'])]
     private ?string $stName = null;
     
     #[ORM\Column]
     #[Assert\NotNull(message: "The stPrice cannot be null.")]
     #[Assert\GreaterThanOrEqual(value: 0, message: "The stPrice must be greater than or equal to 0.")]
-    #[Groups(['getSecurityTokenWallets','getUserSecurityTokenWallets'])]
+    #[Groups(['getProperties', 'getSecurityTokenWallets','getUserSecurityTokenWallets'])]
     private ?int $stPrice = null;
 
     #[ORM\Column(nullable: true)]
     #[Assert\NotNull(message: "The stTotalQuantity cannot be null.")]
     #[Assert\GreaterThanOrEqual(value: 0, message: "The stTotalQuantity must be greater than or equal to 0.")]
-    #[Groups(['getSecurityTokenWallets','getUserSecurityTokenWallets'])]
+    #[Groups(["getProperties", 'getSecurityTokenWallets','getUserSecurityTokenWallets'])]
     private ?int $stTotalQuantity = null;
 
     #[ORM\Column(nullable: true)]
     #[Assert\NotNull(message: "The stActualQuantity cannot be null.")]
     #[Assert\GreaterThanOrEqual(value: 0, message: "The stActualQuantity must be greater than or equal to 0.")]
-    #[Groups(['getSecurityTokenWallets','getUserSecurityTokenWallets'])]
+    #[Groups(["getProperties", 'getSecurityTokenWallets','getUserSecurityTokenWallets'])]
     private ?int $stActualQuantity = null;
 
     #[ORM\ManyToOne(inversedBy: 'securityTokens')]

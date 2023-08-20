@@ -15,13 +15,13 @@ const Welcome = () => {
                 </p>
                 <div className="mt-12 pt-12 flex items-center justify-center gap-x-16 flex-col md:flex-row">
                     <a
-                        href="#"
+                        href="/register"
                         className="px-5 py-4 my-4 md:px-12 md:py-5 min-w-[250px] md:min-w-[300px] opacity-60 md:opacity-100 text-sm md:text-lg uppercase font-semibold text-bg md:text-white bg-white md:bg-transparent border-2 border-white shadow-sm hover:bg-white hover:text-bg duration-500"
                     >
                         S'inscrire
                     </a>
                     <a
-                        href="#"
+                        href="/dashboard"
                         className="px-5 py-4 my-4 md:px-12 md:py-5 min-w-[250px] md:min-w-[300px] opacity-60 md:opacity-100 text-sm md:text-lg uppercase font-semibold text-bg md:text-white bg-white md:bg-transparent border-2 border-white shadow-sm hover:bg-white hover:text-bg duration-500"
                     >
                         Voir les propriétés <span aria-hidden="true">→</span>

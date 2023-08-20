@@ -10,6 +10,10 @@ import { simplicity } from "./simplicity";
 import { flexibility } from "./flexibility";
 import { heart } from "./heart";
 import { location } from "./location";
+import { usercircle } from "./usercircle";
+import { wallet } from "./wallet";
+import { contract } from "./contract";
+import { house } from "./house";
 
 export default {
     facebook,
@@ -24,4 +28,8 @@ export default {
     flexibility,
     heart,
     location,
+    usercircle,
+    wallet,
+    contract,
+    house,
 };
