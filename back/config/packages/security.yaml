@@ -97,6 +97,7 @@ security:
           }
         - { path: ^/api/types, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [POST] }
+        - { path: ^/api/usersbytoken, roles: PUBLIC_ACCESS, methods: [GET] }
         - {
               path: ^/api/users,
               roles: IS_AUTHENTICATED_FULLY,

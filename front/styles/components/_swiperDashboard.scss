@@ -1,0 +1,50 @@
+.swiper {
+  width: 50vw;
+  height: auto;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+/* For Webkit-based browsers (Chrome, Safari and Opera) */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.swiper-button-prev, .swiper-button-next {
+    top: 50%;
+    width: 30px;
+    height: 30px;
+    background: #ffffffb2;
+    color: #FC1A4A;
+    border-radius: 50%;
+    font-weight: 600;
+    outline: 0;
+    transition: background-color .2s ease, color .2s ease;
+    
+    &::after {
+        font-size: 16px;
+    }
+}
+
+.swiper-pagination-bullet {
+    background-color: #FC1A4A;
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+}

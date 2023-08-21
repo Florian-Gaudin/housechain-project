@@ -44,7 +44,7 @@ class SecurityToken
 
     #[ORM\ManyToOne(inversedBy: 'securityTokens')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?property $property = null;
+    private ?Property $property = null;
 
     #[ORM\OneToMany(mappedBy: 'securityToken', targetEntity: SecurityTokenWallet::class)]
     private Collection $securityTokenWallets;
@@ -107,12 +107,12 @@ class SecurityToken
         return $this;
     }
 
-    public function getProperty(): ?property
+    public function getProperty(): ?Property
     {
         return $this->property;
     }
 
-    public function setProperty(?property $property): static
+    public function setProperty(?Property $property): static
     {
         $this->property = $property;
 

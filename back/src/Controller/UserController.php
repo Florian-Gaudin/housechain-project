@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Role;
 use App\Entity\User;
+use App\Repository\SecurityTokenRepository;
+use App\Repository\SecurityTokenWalletRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -144,5 +146,32 @@ class UserController extends AbstractController
         $entityManager->flush();
 
         return new JsonResponse(null, 204);
+    }
+
+    #[OA\Tag(name: 'Users')]
+    #[Route('/api/usersbytoken/{securityTokenId}', name: 'get_users_with_security_token', methods: ['GET'])]
+    public function getUsersWithSecurityToken(int $securityTokenId, UserRepository $userRepository, SecurityTokenRepository $securityTokenRepository, SecurityTokenWalletRepository $securityTokenWalletRepository): JsonResponse
+    {
+        // Récupérer le SecurityToken correspondant à l'ID donné
+        $securityToken = $securityTokenRepository->find($securityTokenId);
+
+        if (!$securityToken) {
+            return new JsonResponse(['error' => '404', 'message' => 'SecurityToken not found.'], 404);
+        }
+
+         // Récupérer les SecurityTokenWallets ayant ce SecurityToken
+        $securityTokenWallets = $securityTokenWalletRepository->findBy(['securityToken' => $securityToken]);
+
+        // Récupérer les utilisateurs associés à ces SecurityTokenWallets
+        $usersWithSecurityToken = [];
+        foreach ($securityTokenWallets as $securityTokenWallet) {
+            $usersWithSecurityToken[] = $securityTokenWallet->getUser()->getId();
+        }
+
+        // Supprimer les doublons potentiels d'utilisateurs
+        $uniqueUsers = array_unique($usersWithSecurityToken);
+        $numberOfUsers = count($uniqueUsers);
+
+        return $this->json($numberOfUsers, 200, [], ['groups' => ['getUsers']]);
     }
 }

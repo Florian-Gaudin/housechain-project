@@ -53,7 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(["getUsers"])]
     #[Assert\NotNull(message: "Le rôle est obligatoire")]
-    private ?role $role = null;
+    private ?Role $role = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: SecurityTokenWallet::class)]
     #[Groups(["getUsers"])]
@@ -188,12 +188,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->getUserIdentifier();
     }
 
-    public function getRole(): ?role
+    public function getRole(): ?Role
     {
         return $this->role;
     }
 
-    public function setRole(?role $role): static
+    public function setRole(?Role $role): static
     {
         $this->role = $role;
 

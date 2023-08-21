@@ -23,6 +23,7 @@ const ShowProperties = () => {
                 // on initialise data et filter
                 setData(propertiesDataResponse);
                 setFilteredData(propertiesDataResponse);
+                console.log(propertiesDataResponse);
 
                 setLoading(false);
             }
@@ -36,7 +37,7 @@ const ShowProperties = () => {
 
     return (
         <>
-            <div className="flex flex-wrap gap-2 justify-around">
+            <div className="flex flex-col lg:flex-row lg:flex-wrap gap-2 items-center lg:justify-around">
                 {loading ? (
                     <Loader />
                 ) : (

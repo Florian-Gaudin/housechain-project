@@ -5,7 +5,7 @@ import SidebarMenu from "./SidebarMenu/SidebarMenu";
 import OpenSidebarMenuButton from "./SidebarMenu/OpenSidebarMenuButton";
 import { SidebarContext } from "@/services/reducer/sidebar.reducer";
 import UserComponent from "./SidebarMenu/UserComponent";
-import PolygonClipPath from "../PolygonClipPath";
+import PolygonClipPath from "../PolygonClippath";
 import indexSvg from "@/public/assets/svg/index-svg";
 import MenuButton from "../Fields/MenuButton";
 import PropertiesMenu from "./SidebarMenu/PropertiesMenu";
@@ -121,12 +121,12 @@ const DashboardLayout = () => {
                         {state.sidebarContent}
                     </SidebarMenu>
                 </div>
-                <div className="">
+                <div className="w-full">
                     {state.mainTitle !== null ? state.mainTitle : storeTitle}
-                    <div className="">
+                    <div className="flex justify-left ml-3">
                         {/* <!-- Main --> */}
-                        <main className="flex items-center px-4 py-8">
-                            <div className="max-h-[80vh] overflow-y-auto flex flex-row border-2 border-white rounded-lg p-4">
+                        <main className="flex items-center px-4 max-w-[95%]">
+                            <div className="max-h-[80vh] w-full overflow-y-auto overflow-x-hidden rounded-lg p-4 scrollbar-hide">
                                 {state.mainContent !== null
                                     ? state.mainContent
                                     : store}
