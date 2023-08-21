@@ -125,8 +125,8 @@ const DashboardLayout = () => {
                     {state.mainTitle !== null ? state.mainTitle : storeTitle}
                     <div className="">
                         {/* <!-- Main --> */}
-                        <main className="flex items-center justify-center flex-1 px-4 py-8">
-                            <div className="max-h-[80vh] overflow-y-auto">
+                        <main className="flex items-center px-4 py-8">
+                            <div className="max-h-[80vh] overflow-y-auto flex flex-row border-2 border-white rounded-lg p-4">
                                 {state.mainContent !== null
                                     ? state.mainContent
                                     : store}

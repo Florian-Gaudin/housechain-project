@@ -1,17 +1,19 @@
 <?php
 namespace App\Controller;
 
+use OpenApi\Annotations\Response;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
-
-use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\Google;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response as SyResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class GoogleController extends AbstractController
 {
@@ -19,9 +21,7 @@ class GoogleController extends AbstractController
     // @param mixed $name
     public function connectGoogle(ClientRegistry $clientRegistry)
     {
-        // on Symfony 3.3 or lower, $clientRegistry = $this->get('knpu.oauth2.registry');
 
-        // will redirect to Facebook!
         return $clientRegistry
             ->getClient('google') // key used in config/packages/knpu_oauth2_client.yaml
             ->redirect([
@@ -30,12 +30,19 @@ class GoogleController extends AbstractController
     }
 
     #[Route('/api/auth/callback/google', name: 'connect_google_check')]
+    public function googleConnectChecktest() {
+        return new SyResponse("CHEH");
+    }
+
+    // #[Route('/api/auth/callback/google', name: 'connect_google_check')]
     public function googleConnectCheck(Request $request, ClientRegistry $clientRegistry)
     {
+        dd($request);
+
         $client = $clientRegistry->getClient('google');
         $provider = $client->getOAuth2Provider();
         
-        if (!empty($_GET['error'])) {
+        if (!empty($request->query->get('error'))) {
 
             // Got an error, probably user denied access
             exit('Got error: ' . htmlspecialchars($_GET['error'], ENT_QUOTES, 'UTF-8'));
@@ -60,25 +67,15 @@ class GoogleController extends AbstractController
 
 
             $authorizationCode = $request->query->get('code');
-            $accessToken = $client->getAccessToken(['code' => $_GET['code']]);
+            $accessToken = $provider->getAccessToken(['code' => $_GET['code']]);
+            dd("client", $client,"provider", $provider,"authorization code", $authorizationCode);
             $ownerDetails = $provider->getResourceOwner($authorizationCode);
-            dd("hello", $client, $provider);
 
 
-    // dd('authorizationCode', $authorizationCode);
-
-    // Try to get an access token (using the authorization code grant)
-    // $token = $provider->getAccessToken('authorization_code', [
-    //     'code' => $authorizationCode
-    // ]);
-
-    // Optional: Now you have a token you can look up a users profile data
     try {
 
-        // We got an access token, let's now get the owner details
-
-        // Use these details to create a new profile
         printf('Hello %s!', $ownerDetails->getFirstName());
+        // $user = $client->fetchUserFromToken($accessToken);
 
     } catch (Exception $e) {
 
@@ -88,7 +85,6 @@ class GoogleController extends AbstractController
     }
 }
 
-        // $user = $client->fetchUserFromToken($accessToken);
 
 
 

@@ -16,7 +16,10 @@ const SettingsMenu = () => {
 
             <button
                 className="block px-4 py-2 text-sm text-bg text-left hover:bg-bglight w-full"
-                onClick={() => signOut({ redirect: false, callbackUrl: "/" })}
+                onClick={() => {
+                    // fetch(`${process.env.NEXT_PUBLIC_API}/api/logout`);
+                    signOut({ redirect: false, callbackUrl: "/" });
+                }}
             >
                 Déconnexion
             </button>

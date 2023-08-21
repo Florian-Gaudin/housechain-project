@@ -70,4 +70,10 @@ class LoginController extends AbstractController
             return new JsonResponse(['message' => 'Incorrect username or password.'], 401);
         }
     }
+
+    // #[Route('/api/logout', name: 'logout', methods: ['POST'])]
+    // public function logout(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): JsonResponse
+    // {
+        
+    // }
 }

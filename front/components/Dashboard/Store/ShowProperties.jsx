@@ -36,7 +36,7 @@ const ShowProperties = () => {
 
     return (
         <>
-            <div className="flex flex-wrap">
+            <div className="flex flex-wrap gap-2 justify-around">
                 {loading ? (
                     <Loader />
                 ) : (
