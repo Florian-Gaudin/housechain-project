@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Property;
 use App\Entity\Type;
 use App\Repository\PropertyRepository;
+use App\Repository\StatusRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,6 +24,16 @@ use OpenApi\Attributes as OA;
 
 class PropertyController extends AbstractController
 {
+    private PropertyRepository $propertyRepository;
+    private StatusRepository $statusRepo;
+    private EntityManagerInterface $em;
+
+    public function __construct(PropertyRepository $propertyRepository, StatusRepository $statusRepo, EntityManagerInterface $em)
+    {
+        $this->propertyRepository = $propertyRepository;
+        $this->statusRepo = $statusRepo;
+        $this->em = $em;
+    }
 
     #[OA\Response(
         response: 200,
@@ -47,6 +59,11 @@ class PropertyController extends AbstractController
     #[Route('/api/properties', name: 'properties', methods: ['GET'])]
     public function getPropertiesList(PropertyRepository $propertyRepository, Request $request, TagAwareCacheInterface $cache, SerializerInterface $serializer): JsonResponse
     {
+        $allProperties = $propertyRepository->findAll();
+        foreach ($allProperties as $property) {
+            $this->updatePropertyStatus($property->getId());
+        }
+
         $page = $request->get('page', 1);
         $limit = $request->get('limit', 100);
 
@@ -57,7 +74,6 @@ class PropertyController extends AbstractController
 
             return $serializer->serialize($propertiesList, 'json', ['groups' => 'getProperties']);
         });
-
         return new JsonResponse($jsonPropertiesList, 200, [], true);
     }
 
@@ -271,5 +287,39 @@ class PropertyController extends AbstractController
         $em->flush();
     
         return $this->json($property, 200, [], ['groups' => ['getProperties']]);
+    }
+
+    public function updatePropertyStatus(int $id)
+    {
+        $status1 = $this->statusRepo->find(1);
+        $status2 = $this->statusRepo->find(2);
+        $status3 = $this->statusRepo->find(3);
+        $property = $this->propertyRepository->find($id);
+        $today = new DateTimeImmutable(date('Y-m-d'));
+        $starting_date = $property->getStartingDate();
+        if($starting_date === null) {
+            $property->setStartingDate($today);
+            $this->em->flush();
+        }
+        $start = $property->getStartingDate();
+        $interval_start = $today->diff($start);
+        $ending_date = $property->getEndingDate();
+        
+        $securityToken = $property->getSecurityTokens();
+        
+        
+        if ( $securityToken[0]->getStActualQuantity() === 0) {
+            $property->setStatus($status3);
+            $property->setEndingDate($today);
+        }
+
+        elseif ( $starting_date !== null && $ending_date === null && $interval_start->invert == 1 && $interval_start->days > 0)  {
+            $property->setStatus($status2);
+        }
+        
+        elseif ( $starting_date !== null && $ending_date === null && $interval_start->invert == 0 && $interval_start->days > 0) {
+            $property->setStatus($status1);
+        }
+        $this->em->flush();
     }
 }

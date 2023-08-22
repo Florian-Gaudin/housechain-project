@@ -44,6 +44,15 @@ const StorePropertyCard = ({ property }) => {
     return (
         <div className="rounded-lg bg-bg/70 p-2 w-[95%]">
             <div className="w-full">
+                <p className="ml-2 text-lg uppercase font-title font-bold rounded-lg bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                    {property.status.id === 1
+                        ? "Bientôt disponible !"
+                        : property.status.id === 2
+                        ? "Vente en cours"
+                        : property.status.id === 3
+                        ? "Le financement est terminé !"
+                        : ""}
+                </p>
                 <div className="flex">
                     <div className="rounded-lg my-3">
                         <Swiper
@@ -96,17 +105,40 @@ const StorePropertyCard = ({ property }) => {
                         <div className="flex flex-col items-center p-3">
                             <p className="text-lg font-extrabold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">{`Rendement Net Cible : ${property.yield} %`}</p>
                             <div className="text-white">
+                                <p>Prix de la part : {tokenPrice} € </p>
+                                <p>Objectif : {totalPrice} € à financer</p>
                                 <p>
-                                    {soldToken} / {token.stTotalQuantity} parts
+                                    {property.status.id === 1
+                                        ? `${fundedPart}€ déjà financés`
+                                        : property.status.id === 2
+                                        ? `${fundedPart}€ déjà financés`
+                                        : property.status.id === 3
+                                        ? ""
+                                        : ""}
                                 </p>
-                                <p>{availableToken} parts disponibles</p>
-                                <p>{tokenPrice} € / part</p>
-                                <p>{totalPrice} € à financer</p>
-                                <p>{fundedPart} déjà financés</p>
-                                <p>Il reste {remainsToFinance} € à financer</p>
+                                <p>
+                                    {property.status.id === 1
+                                        ? `Il reste ${remainsToFinance} € à financer`
+                                        : property.status.id === 2
+                                        ? `Il reste ${remainsToFinance} € à financer`
+                                        : property.status.id === 3
+                                        ? ""
+                                        : ""}
+                                </p>
                                 <p>
                                     Nombre de participants :
-                                    {participants ? participants : null}
+                                    {property.status.id === 1
+                                        ? " 0"
+                                        : property.status.id === 2
+                                        ? ` ${participants ? participants : 0}`
+                                        : property.status.id === 3
+                                        ? ` ${participants ? participants : 0}`
+                                        : " 0"}
+                                </p>
+                            </div>
+                            <div className="flex justify-between">
+                                <p className="text-sm font-bold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                                    {soldToken} / {token.stTotalQuantity} parts
                                 </p>
                             </div>
                             {progressBar.map((item, idx) => (
@@ -116,6 +148,18 @@ const StorePropertyCard = ({ property }) => {
                                     completed={item.completed}
                                 />
                             ))}
+                            <p className="text-sm font-bold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                                {availableToken === 0 ? (
+                                    "Il n'y a plus de part disponible !"
+                                ) : (
+                                    <div>
+                                        <span className="text-white">
+                                            Il reste encore
+                                        </span>{" "}
+                                        {availableToken} <span>parts !</span>
+                                    </div>
+                                )}
+                            </p>
                             <h3 className="text-xl font-bold text-bg">
                                 {property.securityTokens[0].stName}
                             </h3>
@@ -145,17 +189,8 @@ const StorePropertyCard = ({ property }) => {
                         <div className="flex justify-between">
                             <div className="flex items-center">
                                 <img src="https://img.icons8.com/ios-glyphs/24/null/expand--v1.png" />
-                                <p className="ml-2 text-sm font-medium">
-                                    Prix du token :
-                                </p>
                             </div>
-                            <div className="flex items-center">
-                                <img src="https://img.icons8.com/windows/24/null/bedroom.png" />
-                                <p className="ml-2 text-sm font-medium">
-                                    {Math.floor(Math.random() * 3001)} parts
-                                    disponibles
-                                </p>
-                            </div>
+                            <div className="flex items-center"></div>
                             <div className="flex items-center">
                                 <img src="https://img.icons8.com/pastel-glyph/24/null/bath--v2.png" />
                                 <p className="ml-2 text-sm font-medium">
@@ -170,52 +205,17 @@ const StorePropertyCard = ({ property }) => {
                         </div>
                     </div>
                 </div>
-                <div className="w-full bg-white/70 rounded-lg my-3">
-                    <div className="px-6 py-4 bg-white rounded-lg">
-                        <div className="mb-2">
-                            <div className="flex items-center justify-between">
-                                <h2 className="text-xl font-bold text-bg">
-                                    {property.name}{" "}
-                                    <span className="italic text-sm">
-                                        ( {property.type.type_name} )
-                                    </span>
-                                </h2>
 
-                                <div className="mr-2 py-1 px-2 text-xs font-medium text-white"></div>
-                            </div>
-                            <div className="py-1 px-2 text-md font-medium text-bg">
-                                {property.description}
-                            </div>
-                        </div>
-                        <div className="flex justify-between">
-                            <div className="flex items-center">
-                                <img src="https://img.icons8.com/ios-glyphs/24/null/expand--v1.png" />
-                                <p className="ml-2 text-sm font-medium">
-                                    Prix du token :
-                                </p>
-                            </div>
-                            <div className="flex items-center">
-                                <img src="https://img.icons8.com/windows/24/null/bedroom.png" />
-                                <p className="ml-2 text-sm font-medium">
-                                    {Math.floor(Math.random() * 3001)} parts
-                                    disponibles
-                                </p>
-                            </div>
-                            <div className="flex items-center">
-                                <img src="https://img.icons8.com/pastel-glyph/24/null/bath--v2.png" />
-                                <p className="ml-2 text-sm font-medium">
-                                    Intérêt attendu par token :
-                                </p>
-                            </div>
-                        </div>
-                        <div className="mt-4">
-                            <div className="ml-2  text-sm font-medium text-white">
-                                <p className="text-sm font-extrabold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">{`Rendement Net Cible : ${property.yield} %`}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button className="text-white flex align-center text-sm px-5 py-3 mx-auto uppercase font-title font-bold rounded-lg bg-move bg-gradient-to-r from-purple via-red to-purple m-3">
+                <button
+                    className={`text-white flex align-center text-sm px-5 py-3 m-3 mx-auto uppercase font-title font-bold rounded-lg bg-move bg-gradient-to-r ${
+                        property.status.id === 1 || property.status.id === 3
+                            ? "bg-bglight cursor-not-allowed"
+                            : "from-purple via-red to-purple"
+                    }`}
+                    disabled={
+                        property.status.id === 1 || property.status.id === 3
+                    }
+                >
                     Investir dans cette propriété !
                 </button>
             </div>

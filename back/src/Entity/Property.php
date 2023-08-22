@@ -69,6 +69,15 @@ class Property
     #[Assert\NotBlank(message: "Le statut de la propriété est obligatoire")]
     private ?Status $status = null;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $startingDate = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $endingDate = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
     public function __construct()
     {
         $this->property_images = new ArrayCollection();
@@ -220,6 +229,42 @@ class Property
     public function setStatus(?Status $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getStartingDate(): ?\DateTimeInterface
+    {
+        return $this->startingDate;
+    }
+
+    public function setStartingDate(?\DateTimeInterface $startingDate): static
+    {
+        $this->startingDate = $startingDate;
+
+        return $this;
+    }
+
+    public function getEndingDate(): ?\DateTimeInterface
+    {
+        return $this->endingDate;
+    }
+
+    public function setEndingDate(?\DateTimeInterface $endingDate): static
+    {
+        $this->endingDate = $endingDate;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
