@@ -30,14 +30,9 @@ class GoogleController extends AbstractController
     }
 
     #[Route('/api/auth/callback/google', name: 'connect_google_check')]
-    public function googleConnectChecktest() {
-        return new SyResponse("CHEH");
-    }
-
-    // #[Route('/api/auth/callback/google', name: 'connect_google_check')]
     public function googleConnectCheck(Request $request, ClientRegistry $clientRegistry)
     {
-        dd($request);
+        // dd($request);
 
         $client = $clientRegistry->getClient('google');
         $provider = $client->getOAuth2Provider();
@@ -64,10 +59,12 @@ class GoogleController extends AbstractController
             $actualState = $request->query->get('state');
             // dd($actualState);
 
-
+            // dd($request);
 
             $authorizationCode = $request->query->get('code');
-            $accessToken = $provider->getAccessToken(['code' => $_GET['code']]);
+            $accessToken = $provider->getAccessToken('authorization_code', [
+                'code' => $_GET['code']
+            ]);
             dd("client", $client,"provider", $provider,"authorization code", $authorizationCode);
             $ownerDetails = $provider->getResourceOwner($authorizationCode);
 
