@@ -24,25 +24,6 @@ nelmio_api_doc:
                                 application/json:
                                     schema:
                                         $ref: "#/components/schemas/Token"
-            /api/login:
-                post:
-                    operationId: postLoginCredentials
-                    tags:
-                        - Token
-                    summary: Permet de se connecter avec credentials (username, password).
-                    requestBody:
-                        description: Crée un nouveau token JWT
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/LoginCredentials"
-                    responses:
-                        "200":
-                            description: Récupère le token JWT
-                            content:
-                                application/json:
-                                    schema:
-                                        $ref: "#/components/schemas/Token"
             /api/register:
                 post:
                     operationId: postRegister
@@ -74,7 +55,7 @@ nelmio_api_doc:
                             default: admin@housechain.com
                         password:
                             type: string
-                            default: password (access_token)
+                            default: 123456789
                 LoginCredentials:
                     type: object
                     properties:

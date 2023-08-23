@@ -68,9 +68,9 @@ class UserController extends AbstractController
         $user->setRole($defaultRole);
         $user->setPassword($passwordHasher->hashPassword($user, $data['password']));
 
-        // Hash the password_login before persisting
-        $hashedPasswordLogin = $passwordHasher->hashPassword($user, $data['password']);
-        $user->setPasswordLogin($hashedPasswordLogin);
+        // Hash the password before persisting
+        $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
+        $user->setPassword($hashedPassword);
 
         // Validate the User entity
         $errors = $validator->validate($user);

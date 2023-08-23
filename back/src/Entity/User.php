@@ -62,9 +62,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 1000, nullable: true)]
     private ?string $access_token = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $password_login = null;
-
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -238,18 +235,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAccessToken(?string $access_token): static
     {
         $this->access_token = $access_token;
-
-        return $this;
-    }
-
-    public function getPasswordLogin(): ?string
-    {
-        return $this->password_login;
-    }
-
-    public function setPasswordLogin(?string $password_login): static
-    {
-        $this->password_login = $password_login;
 
         return $this;
     }

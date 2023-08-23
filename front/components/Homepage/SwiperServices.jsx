@@ -33,7 +33,7 @@ const SwiperServices = () => {
             ></div>
             <div className="absolute top-14 w-full mx-auto reveal-1">
                 <h4 className="text-4xl leading-8 uppercase tracking-widest font-title font-extrabold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
-                    Nos services
+                    Nos actualités
                 </h4>
             </div>
             <SwiperSlide className="services-swiper reveal-2">

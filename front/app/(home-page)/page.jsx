@@ -26,7 +26,7 @@ const Home = () => {
             >
                 <Properties />
             </section>
-            <section id="services" className="mx-auto min-h-[100vh]">
+            <section id="actuality" className="mx-auto min-h-[100vh]">
                 <Services />
             </section>
             <Footer />

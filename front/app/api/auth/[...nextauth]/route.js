@@ -56,83 +56,80 @@ async function Auth(request, context) {
             CredentialsProvider({
                 name: "credentials",
                 authorize: async (credentials) => {
-                    const cookies = await createCookies(credentials);
+                    // const cookies = await createCookies(credentials);
                     try {
-                        // Authenticate user with credentials
-                        const userLogin = await fetch(
-                            `${process.env.NEXT_PUBLIC_API}/api/login`,
+                        // // Authenticate user with credentials
+                        // const userLogin = await fetch(
+                        //     `${process.env.NEXT_PUBLIC_API}/api/login`,
+                        //     {
+                        //         headers: {
+                        //             "Content-Type": "application/json",
+                        //             Cookie: cookies,
+                        //         },
+                        //         body: JSON.stringify({
+                        //             username: credentials.username,
+                        //             password: credentials.password,
+                        //         }),
+                        //         method: "POST",
+                        //     }
+                        // );
+
+                        // const userLoginResponse = await userLogin.json();
+                        // console.log(userLoginResponse, userLogin);
+                        // credentials.access_token =
+                        //     userLoginResponse.access_token;
+
+                        // if (userLogin.status === 200) {
+                        const getJwt = await fetch(
+                            `${process.env.NEXT_PUBLIC_API}/api/login_check`,
                             {
                                 headers: {
                                     "Content-Type": "application/json",
-                                    Cookie: cookies,
                                 },
                                 body: JSON.stringify({
                                     username: credentials.username,
-                                    password_login: credentials.password,
+                                    password: credentials.password,
                                 }),
                                 method: "POST",
                             }
                         );
-
-                        const userLoginResponse = await userLogin.json();
-                        console.log(userLoginResponse, userLogin);
-                        credentials.access_token =
-                            userLoginResponse.access_token;
-
-                        if (userLogin.status === 200) {
-                            const getJwt = await fetch(
-                                `${process.env.NEXT_PUBLIC_API}/api/login_check`,
+                        const getJwtResponse = await getJwt.json();
+                        console.log(
+                            "getjwt",
+                            getJwt,
+                            "getjwtresponse",
+                            getJwtResponse
+                        );
+                        if (
+                            getJwtResponse.token &&
+                            getJwt.status === 200
+                            // &&
+                            // TODO
+                            // getJwtResponse.refresh_token
+                        ) {
+                            const fetchUser = await fetch(
+                                `${process.env.NEXT_PUBLIC_API}/api/me`,
                                 {
                                     headers: {
+                                        Authorization: `Bearer ${getJwtResponse.token}`,
                                         "Content-Type": "application/json",
                                     },
-                                    body: JSON.stringify({
-                                        username: credentials.username,
-                                        password: credentials.access_token,
-                                    }),
-                                    method: "POST",
+                                    method: "GET",
                                 }
                             );
-                            const getJwtResponse = await getJwt.json();
-                            console.log(
-                                "getjwt",
-                                getJwt,
-                                "getjwtresponse",
-                                getJwtResponse
-                            );
-                            if (
-                                getJwtResponse.token &&
-                                getJwt.status === 200
-                                // &&
-                                // TODO
-                                // getJwtResponse.refresh_token
-                            ) {
-                                const fetchUser = await fetch(
-                                    `${process.env.NEXT_PUBLIC_API}/api/me`,
-                                    {
-                                        headers: {
-                                            Authorization: `Bearer ${getJwtResponse.token}`,
-                                            "Content-Type": "application/json",
-                                        },
-                                        method: "GET",
-                                    }
-                                );
-                                const user = await fetchUser.json();
-                                console.log("user dans route.js", user);
-                                //Delete cookies for more security
-                                const deleteCookies = await cookiesDeleting();
-                                return {
-                                    accessToken: user.token,
-                                    user: user,
-                                };
-                            }
-                            if (
-                                getJwt.status === 401 &&
-                                getJwtResponse.message
-                            ) {
-                                throw getJwt.message;
-                            }
+                            const user = await fetchUser.json();
+                            console.log("user dans route.js", user);
+                            //Delete cookies for more security
+                            const deleteCookies = await cookiesDeleting();
+                            return {
+                                accessToken: user.token,
+                                user: user,
+                            };
                         }
+                        if (getJwt.status === 401 && getJwtResponse.message) {
+                            throw getJwt.message;
+                        }
+                        // }
 
                         if (
                             userLogin.status === 401 &&

@@ -33,7 +33,7 @@ class GoogleAuthenticator extends OAuth2Authenticator implements AuthenticationE
 
     public function supports(Request $request): ?bool
     {
-        dd("hello googleauth supports" . ($request->attributes->get('_route') === 'connect_google_check') );
+        // dd("hello googleauth supports" . ($request->attributes->get('_route') === 'connect_google_check') );
         return $request->attributes->get('_route') === 'connect_google_check';
         // continue ONLY if the current ROUTE matches the check ROUTE
     }
