@@ -1,12 +1,10 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import SidebarMenu from "./SidebarMenu/SidebarMenu";
 import OpenSidebarMenuButton from "./SidebarMenu/OpenSidebarMenuButton";
 import { SidebarContext } from "@/services/reducer/sidebar.reducer";
-import UserComponent from "./SidebarMenu/UserComponent";
 import PolygonClipPath from "../PolygonClippath";
-import indexSvg from "@/public/assets/svg/index-svg";
 import MenuButton from "../Fields/MenuButton";
 import PropertiesMenu from "./SidebarMenu/PropertiesMenu";
 import MyPropertiesMenu from "./SidebarMenu/MyPropertiesMenu";
@@ -14,22 +12,64 @@ import MyWalletMenu from "./SidebarMenu/MyWalletMenu";
 import SettingsButton from "./SidebarMenu/SettingsButton";
 import ShowProperties from "./Store/ShowProperties";
 import MainTitle from "./MainTitle";
+import MarketMenu from "./SidebarMenu/MarketMenu";
+import Market from "@/components/Dashboard/Market/Market";
+import indexSvg from "@/public/assets/svg/index-svg";
+import { useSession } from "next-auth/react";
+import ProfileMenu from "./SidebarMenu/ProfileMenu";
+import UserAvatar from "./SidebarMenu/UserAvatar";
 
 const DashboardLayout = () => {
-    //placement bouton connexion
-    const origin = "origin-origin-bottom-left left-10 bottom-14";
+    const { data: session, status } = useSession();
+    const [noSession, setNoSession] = useState(true);
+
     // contenu contextuel de la sidebar menu
     const propertiesMenu = <PropertiesMenu />;
     const myPropertiesMenu = <MyPropertiesMenu />;
     const myWalletMenu = <MyWalletMenu />;
+    const marketMenu = <MarketMenu />;
+    const profileMenu = <ProfileMenu />;
 
     // contenu contextuel du main
     const store = <ShowProperties />;
     const storeTitle = <MainTitle title={"Nos propriétés"} />;
-    const myProperties = <h3 className="text-white">My properties</h3>;
+    const market = <Market noSession={noSession} />;
+    const marketTitle = <MainTitle title={"Marché crypto"} />;
+    const myProperties = (
+        <h3 noSession={noSession} className="text-white">
+            My properties
+        </h3>
+    );
     const myPropertiesTitle = <MainTitle title={"Mes investissements"} />;
-    const myWallet = <h3 className="text-white">My wallet</h3>;
+    const myWallet = (
+        <h3 noSession={noSession} className="text-white">
+            My wallet
+        </h3>
+    );
     const myWalletTitle = <MainTitle title={"Mon portefeuille"} />;
+    const profile = (
+        <h3 id="profile" noSession={noSession} className="text-white">
+            Mes informations
+        </h3>
+    );
+    const profileTitle = <MainTitle title={"Mes informations"} />;
+
+    //svg buttons
+    const storeSvg = indexSvg.house;
+    const walletSvg = indexSvg.bitcoin(
+        `h-5 w-5 ${noSession ? "fill-bglight" : "color-anim"}`
+    );
+    const myPropertiesSvg = indexSvg.contract(
+        `h-5 w-5 ${noSession ? "fill-bglight" : "color-anim"}`
+    );
+    const myWalletSvg = indexSvg.wallet(
+        `h-5 w-5 ${noSession ? "fill-bglight" : "color-anim"}`
+    );
+    const notLoggedUserSvg = indexSvg.usercircle(
+        `h-5 w-5 ${noSession ? "fill-bglight" : "color-anim"}`
+    );
+
+    const userAvatar = noSession ? notLoggedUserSvg : <UserAvatar />;
 
     const { state, dispatch } = useContext(SidebarContext);
     const toggleSidebar = (sidebarContent, mainContent, mainTitle) => {
@@ -41,6 +81,14 @@ const DashboardLayout = () => {
         });
     };
 
+    useEffect(() => {
+        if (!session && status === "unauthenticated") {
+            setNoSession(true);
+        } else {
+            setNoSession(false);
+        }
+    }, [session, status]);
+
     return (
         <>
             <div className="flex h-screen antialiased overflow-hidden">
@@ -50,10 +98,6 @@ const DashboardLayout = () => {
                 </div>
                 {/* <!-- Sidebar --> */}
                 <div className="flex flex-shrink-0">
-                    {/* <div
-                        // className={`${isSidebarOpen ? "open" : ""}`}
-                        className="fixed inset-0 z-10 bg-bg bg-opacity-50 lg:hidden"
-                    ></div> */}
                     <div
                         className={`${
                             state.isSidebarOpen
@@ -86,7 +130,19 @@ const DashboardLayout = () => {
                                         mainTitle: storeTitle,
                                     })
                                 }
-                                content={indexSvg.house}
+                                contentSvg={storeSvg}
+                            />
+                            <OpenSidebarMenuButton
+                                onClick={() =>
+                                    dispatch({
+                                        type: "TOGGLE_SIDEBAR",
+                                        sidebarContent: marketMenu,
+                                        mainContent: market,
+                                        mainTitle: marketTitle,
+                                    })
+                                }
+                                contentSvg={walletSvg}
+                                disabled={noSession}
                             />
                             <OpenSidebarMenuButton
                                 onClick={() =>
@@ -97,7 +153,8 @@ const DashboardLayout = () => {
                                         mainTitle: myPropertiesTitle,
                                     })
                                 }
-                                content={indexSvg.contract}
+                                contentSvg={myPropertiesSvg}
+                                disabled={noSession}
                             />
                             <OpenSidebarMenuButton
                                 onClick={() =>
@@ -108,13 +165,23 @@ const DashboardLayout = () => {
                                         mainTitle: myWalletTitle,
                                     })
                                 }
-                                content={indexSvg.wallet}
+                                contentSvg={myWalletSvg}
+                                disabled={noSession}
+                            />
+                            <OpenSidebarMenuButton
+                                onClick={() =>
+                                    dispatch({
+                                        type: "TOGGLE_SIDEBAR",
+                                        sidebarContent: profileMenu,
+                                        mainContent: profile,
+                                        mainTitle: profileTitle,
+                                    })
+                                }
+                                contentSvg={userAvatar}
+                                disabled={noSession}
                             />
                         </div>
-                        <div className="relative mb-5">
-                            <UserComponent origin={origin} />
-                        </div>
-                        <SettingsButton />
+                        <SettingsButton noSession={noSession} />
                     </nav>
 
                     <SidebarMenu isSidebarOpen={state.isSidebarOpen}>
@@ -123,10 +190,10 @@ const DashboardLayout = () => {
                 </div>
                 <div className="w-full">
                     {state.mainTitle !== null ? state.mainTitle : storeTitle}
-                    <div className="flex justify-left ml-3">
+                    <div className="flex justify-center ml-3">
                         {/* <!-- Main --> */}
                         <main className="flex items-center px-4 max-w-[95%]">
-                            <div className="max-h-[80vh] w-full overflow-y-auto overflow-x-hidden rounded-lg p-4 scrollbar-hide">
+                            <div className="max-h-[80vh] w-full overflow-y-auto overflow-x-hidden p-4 scrollbar-hide">
                                 {state.mainContent !== null
                                     ? state.mainContent
                                     : store}

@@ -14,37 +14,6 @@ const GOOGLE_AUTHORIZATION_URL =
         // content_type: "application/x-www-form-urlencoded",
     });
 
-export async function createCookies(credentials) {
-    // console.log(credentials.username.username);
-    const secret = process.env.JWT_SECRET;
-    const username = credentials.username;
-    const MAX_AGE = 60 * 60 * 24 * 30;
-    const token = sign(
-        {
-            username,
-        },
-        secret,
-        { expiresIn: MAX_AGE }
-    );
-    const outsiteJWTCookie = cookies().set({
-        name: "OutSiteJWT",
-        value: token,
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        path: "/",
-        maxAge: MAX_AGE,
-    });
-    const usernameCookie = cookies().set({
-        name: "Username",
-        value: username,
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        path: "/",
-        maxAge: MAX_AGE,
-    });
-    return outsiteJWTCookie;
-}
-
 export async function cookiesDeleting() {
     cookies().delete("OutSiteJWT");
     cookies().delete("Username");
@@ -56,30 +25,7 @@ async function Auth(request, context) {
             CredentialsProvider({
                 name: "credentials",
                 authorize: async (credentials) => {
-                    // const cookies = await createCookies(credentials);
                     try {
-                        // // Authenticate user with credentials
-                        // const userLogin = await fetch(
-                        //     `${process.env.NEXT_PUBLIC_API}/api/login`,
-                        //     {
-                        //         headers: {
-                        //             "Content-Type": "application/json",
-                        //             Cookie: cookies,
-                        //         },
-                        //         body: JSON.stringify({
-                        //             username: credentials.username,
-                        //             password: credentials.password,
-                        //         }),
-                        //         method: "POST",
-                        //     }
-                        // );
-
-                        // const userLoginResponse = await userLogin.json();
-                        // console.log(userLoginResponse, userLogin);
-                        // credentials.access_token =
-                        //     userLoginResponse.access_token;
-
-                        // if (userLogin.status === 200) {
                         const getJwt = await fetch(
                             `${process.env.NEXT_PUBLIC_API}/api/login_check`,
                             {
@@ -119,8 +65,6 @@ async function Auth(request, context) {
                             );
                             const user = await fetchUser.json();
                             console.log("user dans route.js", user);
-                            //Delete cookies for more security
-                            const deleteCookies = await cookiesDeleting();
                             return {
                                 accessToken: user.token,
                                 user: user,
@@ -204,6 +148,8 @@ async function Auth(request, context) {
         },
         pages: {
             signIn: "/login",
+            signOut: "/auth/signout",
+            error: "/auth/error",
         },
     });
 }

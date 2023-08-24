@@ -14,19 +14,16 @@ const HeaderInfos = () => {
     }, []);
 
     return (
-        <div className="header-container">
-            <ul className="title">
+        <div className="header-container mr-4 flex flex-col h-[300px]">
+            <ul className="title h-1/2 bg-bg rounded-lg text-white p-4 border-b-2 border-red">
                 <li>
-                    <h1>Marché Crypto</h1>
-                </li>
-                <li>
-                    Cryptomonnaies :
+                    Total Cryptomonnaies :
                     {headerData.active_cryptocurrencies &&
                         headerData.active_cryptocurrencies.toLocaleString()}
                 </li>
                 <li>Marchés : {headerData.markets && headerData.markets}</li>
             </ul>
-            <ul className="infos-mkt">
+            <ul className="infos-mkt h-1/2 p-4">
                 <li className="global-mkt">
                     MarketCap Global (24H) :
                     <PercentChange
@@ -48,7 +45,6 @@ const HeaderInfos = () => {
                         "%"}
                 </li>
             </ul>
-            <TableFilters />
         </div>
     );
 };

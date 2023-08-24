@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import SettingsMenu from "./SettingsMenu";
 import indexSvg from "@/public/assets/svg/index-svg";
 
-const SettingsButton = () => {
+const SettingsButton = ({ noSession }) => {
     const [isSettingsMenuOpen, setSettingsMenuOpen] = useState(false);
     const settingsComponentRef = useRef(null);
+    const origin = "origin-origin-bottom-left left-10 bottom-14";
 
     const toggleSettingsMenu = () => {
         setSettingsMenuOpen(!isSettingsMenuOpen);
@@ -34,7 +35,9 @@ const SettingsButton = () => {
             {indexSvg.settings}
 
             {/* Afficher le settingsMenu si issettingsMenuOpen est true */}
-            {isSettingsMenuOpen && <SettingsMenu />}
+            {isSettingsMenuOpen && (
+                <SettingsMenu origin={origin} noSession={noSession} />
+            )}
         </div>
     );
 };

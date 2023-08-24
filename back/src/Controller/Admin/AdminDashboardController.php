@@ -50,33 +50,20 @@ class AdminDashboardController extends AbstractDashboardController
         // user menu with some menu items already created ("sign out", "exit impersonation", etc.)
         // if you prefer to create the user menu from scratch, use: return UserMenu::new()->...
         return parent::configureUserMenu($user)
-            // use the given $user object to get the user name
-            ->setName($user->getFullName())
-            // use this method if you don't want to display the name of the user
+            ->setName($user->getName())
             ->displayUserName(true)
-
-            // you can return an URL with the avatar image
-            ->setAvatarUrl('https://...')
-            ->setAvatarUrl($user->getProfileImageUrl())
-            // use this method if you don't want to display the user image
-            ->displayUserAvatar(true)
-            // you can also pass an email address to use gravatar's service
-            ->setGravatarEmail($user->getMainEmailAddress())
-
+            ->setGravatarEmail($user->getMail())
             // you can use any type of menu item, except submenus
             ->addMenuItems([
-                MenuItem::linkToRoute('My Profile', 'fa fa-id-card', '...', ['...' => '...']),
-                MenuItem::linkToRoute('Settings', 'fa fa-user-cog', '...', ['...' => '...']),
                 MenuItem::section(),
-                MenuItem::linkToLogout('Logout', 'fa fa-sign-out'),
             ]);
     }
 
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToLogout('Se déconnecter', 'fa fa-exit');
         yield MenuItem::linkToUrl('Retour sur Housechain', null, 'http://localhost:3000/');
-        // yield MenuItem::linkToLogout('Se déconnecter', 'fa fa-exit');
         yield MenuItem::section('Propriétés');
         yield MenuItem::subMenu('Actions', 'fa fa-bar')->setSubItems(
             [

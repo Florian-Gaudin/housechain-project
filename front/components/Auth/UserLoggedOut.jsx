@@ -10,7 +10,7 @@ const UserLoggedOut = () => {
                 href="/login"
                 className="uppercase relative flex items-center gap-4 flex-shrink-0 transform transition-transform duration-1000 ease-in-out opacity-80 hover:opacity-100 hover:scale-110 shadow-lg rounded-lg cursor-pointer bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text font-bold p-5 text-2xl font-title my-auto"
             >
-                {indexSvg.usercircle}
+                {indexSvg.usercircle("color-anim")}
                 Mon compte
             </Link>
         </div>

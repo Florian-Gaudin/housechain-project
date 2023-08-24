@@ -1,0 +1,17 @@
+App\DTO\ContactDTO:
+    properties:
+        name:
+            - NotBlank: { message: Veuillez renseigner votre nom. }
+        surname:
+            - NotBlank: { message: Veuillez renseigner votre prénom. }
+        mail:
+            - NotBlank: { message: Veuillez renseigner votre adresse mail. }
+            - Email:
+                  message: L'email "{{ value }}" n'est pas valide.
+        message:
+            - NotBlank: { message: Veuillez écrire votre message. }
+            - Length:
+                  min: 10
+                  max: 500
+                  minMessage: Votre message est trop court. Il doit contenir au minimum {{ limit }} caractères.
+                  maxMessage: Votre message est trop long. Il doit contenir au maximum {{ limit }} caractères.

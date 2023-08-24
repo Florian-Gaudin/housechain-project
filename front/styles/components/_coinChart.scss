@@ -44,11 +44,11 @@
         justify-content: center;
 
         &.active-btn {
-          background: $color1;
+          background: red;
           padding: 2px 4px;
         }
         &:hover {
-          background: $color1;
+          background: red;
         }
       }
     }
@@ -57,11 +57,11 @@
       margin-left: -105px;
 
       text {
-        fill: $white1;
+        fill: white;
         font-size: 0.9rem;
       }
       .recharts-tooltip-wrapper {
-        color: $color1;
+        color: red;
         border-radius: 10px;
         overflow: hidden;
 
@@ -74,7 +74,7 @@
 
           .recharts-tooltip-item-value,
           .recharts-tooltip-item-name {
-            color: $black1 !important;
+            color: black !important;
           }
         }
       }

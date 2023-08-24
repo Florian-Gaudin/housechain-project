@@ -9,6 +9,7 @@ const UserComponent = ({
     isHovered,
     onMouseEnter,
     onMouseLeave,
+    noSession,
 }) => {
     const [isUserMenuOpen, setUserMenuOpen] = useState(false);
     const userComponentRef = useRef(null);
@@ -43,7 +44,9 @@ const UserComponent = ({
             <UserAvatar children={children} />
 
             {/* Afficher le UserMenu si isUserMenuOpen est true */}
-            {isUserMenuOpen && <UserMenu origin={origin} />}
+            {isUserMenuOpen && (
+                <UserMenu noSession={noSession} origin={origin} />
+            )}
             {isHovered && hoverContent && (
                 <div className="transition-opacity opacity-100 bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
                     {hoverContent}

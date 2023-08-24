@@ -13,11 +13,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as SyResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class GoogleController extends AbstractController
 {
-    #[Route('/api/connect/google', name: 'connect_google')]
+    #[Route('/api/connect/google', name: 'connect_google', methods: ['GET'])]
     // @param mixed $name
     public function connectGoogle(ClientRegistry $clientRegistry)
     {
@@ -29,14 +30,14 @@ class GoogleController extends AbstractController
             ]);
     }
 
-    #[Route('/api/auth/callback/google', name: 'connect_google_check')]
+    #[Route('/api/auth/callback/google', name: 'connect_google_check', methods: ['GET'])]
     public function googleConnectCheck(Request $request, ClientRegistry $clientRegistry)
     {
         // dd($request);
 
         $client = $clientRegistry->getClient('google');
         $provider = $client->getOAuth2Provider();
-        
+        // new HttpClient
         if (!empty($request->query->get('error'))) {
 
             // Got an error, probably user denied access

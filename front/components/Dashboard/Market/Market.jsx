@@ -1,22 +1,23 @@
 "use client";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-import rootReducer from "../../services/reducer";
+import rootReducer from "../../../services/reducer";
 import HeaderInfos from "@/components/Market/HeaderInfos";
 import GlobalChart from "@/components/Market/GlobalChart";
-import "../../styles/market.scss";
+import "../../../styles/market.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Table from "@/components/Market/Table";
-import ToTopButton from "@/components/Fields/ToTopButton";
 
-export default function Market({}) {
+export default function Market({ noSession }) {
+    const [loading, setLoading] = useState(false);
     const store = configureStore({
         reducer: rootReducer,
         devTools: true,
     });
     const [coinsData, setCoinsData] = useState([]);
     useEffect(() => {
+        setLoading(true);
         axios
             .get(
                 "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d%2C14d%2C30d%2C200d%2C1y"
@@ -31,17 +32,27 @@ export default function Market({}) {
                     .classList.remove("active");
             }
         });
+        setLoading(false);
     }, []);
     return (
         <Provider store={store}>
-            <div className="market-container">
-                <header>
-                    <HeaderInfos />
-                    <GlobalChart coinsData={coinsData} />
-                </header>
-                <Table coinsData={coinsData} />
-                <ToTopButton />
-            </div>
+            {noSession ? (
+                <p>Vous devez vous connecter pour voir ce contenu.</p>
+            ) : (
+                <div>
+                    {loading ? (
+                        <Loader />
+                    ) : (
+                        <div className="market-container p-4 bg-bg/70 rounded-lg text-white">
+                            <header>
+                                <HeaderInfos />
+                                <GlobalChart coinsData={coinsData} />
+                            </header>
+                            <Table coinsData={coinsData} />
+                        </div>
+                    )}
+                </div>
+            )}
         </Provider>
     );
 }

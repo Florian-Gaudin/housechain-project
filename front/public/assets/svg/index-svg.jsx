@@ -15,6 +15,7 @@ import { wallet } from "./wallet";
 import { contract } from "./contract";
 import { house } from "./house";
 import { settings } from "./settings";
+import { bitcoin } from "./bitcoin";
 
 export default {
     facebook,
@@ -34,4 +35,5 @@ export default {
     contract,
     house,
     settings,
+    bitcoin,
 };

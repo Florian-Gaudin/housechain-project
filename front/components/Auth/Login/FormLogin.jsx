@@ -3,27 +3,44 @@
 import Button from "@/components/Fields/Button";
 import Link from "next/link";
 import Input from "@/components/Form/Input";
-import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import LoaderIcon from "@/components/Icons/LoaderIcon";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import validator from "validator";
+import { object, string } from "yup";
+
+const schema = object({
+    username: string()
+        .required("Veuillez entrer votre adresse email.")
+        .email("Adresse email invalide.")
+        .trim(),
+    password: string().required("Veuillez entrer votre mot de passe.").trim(),
+}).required();
 
 export default function FormLogin() {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const router = useRouter();
+    const [error, setError] = useState({});
+
     const {
+        control,
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
+
     const inputProps = { register, errors };
     const [loading, setLoading] = useState(false);
-    const [decodedCallbackURL, setDecodedCallbackURL] = useState("/"); // url de redirection par défaut
+    const [decodedCallbackURL, setDecodedCallbackURL] = useState("/dashboard"); // url de redirection par défaut
 
     useEffect(() => {
-        if (session && session.user) {
+        if (session && status !== "unauthenticated") {
             router.push(decodedCallbackURL);
         }
     }, [session]);
@@ -61,9 +78,15 @@ export default function FormLogin() {
             }
         }
     }, []);
-    // useEffect(() => {}, []);
 
     const onSubmit = (data) => {
+        const { username, password } = data;
+
+        // Use validator to avoid XSS attacks.
+        const safeData = {
+            username: validator.escape(username),
+            password: validator.escape(password),
+        };
         console.log(data);
         setLoading(true);
         signIn("credentials", {
@@ -73,44 +96,48 @@ export default function FormLogin() {
         }).then((r) => {
             setLoading(false);
             console.log(r);
-            if (r.error) {
-                console.log(r); // TODO: changer l'erreur
+            if (status === "unauthenticated") {
+                console.error("Erreur lors du login");
+                router.push("/login");
+            } else {
+                router.push(decodedCallbackURL);
             }
-            router.push(decodedCallbackURL);
-            // if (r.url !== null) {
-            // }
         });
     };
 
     return (
-        <div className="py-4 px-6 bg-white text-light text-sm md:w-1/2">
+        <div className="w-1/2">
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col gap-6"
+                className="flex flex-col gap-6 text-left"
             >
                 <Input
                     type="email"
                     name="username"
-                    label="Adresse mail"
-                    className="border py-2 px-2"
-                    placeholder="adresse email"
+                    label="Votre adresse email"
+                    className="border rounded-lg py-2 px-2"
+                    placeholder="exemple@housechain.com"
                     validation={{ required: true }}
                     {...inputProps}
                 />
                 <Input
                     type="password"
                     name="password"
-                    label="Mot de passe"
-                    className="border py-2 px-2"
+                    label="Votre mot de passe"
+                    placeholder="************"
+                    className="border rounded-lg py-2 px-2"
                     validation={{ required: true }}
                     {...inputProps}
                 />
                 <div className="flex justify-center w-full gap-4 text-white rounded-lg">
+                    {error?.message && (
+                        <AuthError error={error} setError={setError} />
+                    )}
                     <Button
                         disabled={loading}
                         type="submit"
                         title="Se connecter"
-                        className="bg-[#009EE0] rounded-lg py-3 px-3 text-xl font-semibold"
+                        className="bg-move bg-gradient-to-r from-purple via-red to-purple rounded-lg py-3 px-3 text-xl font-semibold"
                     >
                         {loading && (
                             <LoaderIcon className="animate-spin h-5 w-5" />
@@ -120,8 +147,14 @@ export default function FormLogin() {
                 </div>
                 <span className="w-full text-center">
                     Pas encore inscrit ?{" "}
-                    <Link href="/register" className="text-primary">
+                    <Link href="/register" className="underline">
                         Inscrivez-vous
+                    </Link>
+                </span>
+                <span className="w-full text-center">
+                    Mot de passe oublié ?{" "}
+                    <Link href="/forgotpassword" className="underline">
+                        Réinitialiser le mot de passe
                     </Link>
                 </span>
             </form>

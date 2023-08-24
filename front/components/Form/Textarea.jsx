@@ -1,22 +1,23 @@
-export default function Input({
+export default function Textarea({
     label,
     labelClassName,
     name,
     register,
     errors,
-    type,
+    rows,
     className,
     validation,
     placeholder,
 }) {
+    console.log("Textarea component received:", errors, errors[name]?.message);
     return (
         <div className="flex flex-col">
             <label className={labelClassName}>{`${label}${
                 validation?.required ? " *" : ""
             }`}</label>
-            <input
+            <textarea
                 placeholder={placeholder}
-                type={type}
+                rows={rows}
                 className={`${className} ${
                     errors[name] ? "border-red" : "border-bg"
                 }`}

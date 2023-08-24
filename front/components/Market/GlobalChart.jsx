@@ -88,7 +88,7 @@ const GlobalChart = ({ coinsData }) => {
         <div className="global-chart">
             <DynamicTreemap
                 width={730}
-                height={180}
+                height={300}
                 data={dataArray}
                 dataKey="size"
                 stroke="rgb(51,51,51)"

@@ -1,6 +1,6 @@
 .table-container {
   text-align: center;
-  color: $white1 !important;
+  color: white !important;
 
   .table-header,
   .table-line {
@@ -67,13 +67,13 @@
     span {
       input {
         width: 30px;
-        font-family: $font1;
+
         background: none;
         border: none;
         outline: none;
         color: white;
         font-size: 1.05rem;
-        color: $white1;
+
       }
     }
 
@@ -87,7 +87,7 @@
       input[type="range"] {
         appearance: none;
         width: 180px;
-        background: linear-gradient(90deg, $color1, #0debc6);
+        background: linear-gradient(90deg, white, #0debc6);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         border-radius: 50px;
         height: 6px;
@@ -109,7 +109,7 @@
         width: 6px;
         height: 14px;
         transform: translateY(-2px);
-        background: $white1;
+        background: white;
         border-radius: 150px;
         cursor: grab;
         transition: 0.15s;
@@ -132,7 +132,7 @@
 
       &:checked ~ label {
         font-weight: 900;
-        color: $color1;
+        color: red;
       }
     }
     label {
@@ -141,7 +141,7 @@
       transition: 0.1s;
 
       &:hover {
-        color: $color1;
+        color: red;
       }
     }
   }
@@ -151,7 +151,7 @@
     align-items: center;
     border-top: 1px solid rgb(73, 73, 73);
     position: relative;
-    color: $white1;
+    color: white;
     transition: 0.15s;
 
     @media screen and (max-width: 1020px) {
@@ -241,7 +241,7 @@
           letter-spacing: 1px;
         }
         span {
-          color: $white2;
+          color: white;
           margin: 3px 2px 0 5px;
           font-size: 0.9rem;
 
@@ -265,7 +265,7 @@
     }
     .volume,
     .mktcap {
-      color: $white2;
+      color: white;
     }
   }
 }

@@ -44,10 +44,10 @@ const UserAvatar = ({ onClick, children }) => {
     return (
         <>
             {session && session?.user ? (
-                <div className="rounded-full p-1" onClick={onClick}>
-                    <button className="bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text font-bold p-1 flex items-center gap-4">
+                <div className="rounded-full" onClick={onClick}>
+                    <button className="bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text font-bold flex items-center gap-4">
                         <span className="sr-only">Menu utilisateur</span>
-                        <span className="uppercase text-2xl">
+                        <span className="uppercase text-xl">
                             {getInitials(
                                 session.user.name,
                                 session.user.surname
