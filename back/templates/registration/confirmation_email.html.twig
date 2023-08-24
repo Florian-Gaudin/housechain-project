@@ -1,0 +1,13 @@
+<h1>Bienvenue chez Housechain !</h1>
+
+<p>
+	Veuillez confirmer votre inscription en cliquant sur le lien suivant:
+	<br><br>
+	<a href="{{ signedUrl|raw }}">Confirmer l'inscription</a>.
+				    Ce lien expirera dans
+	{{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+</p>
+
+<p>
+	À bientôt !
+</p>

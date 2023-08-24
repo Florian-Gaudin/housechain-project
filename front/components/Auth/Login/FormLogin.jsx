@@ -25,7 +25,8 @@ export default function FormLogin() {
     const { data: session, status } = useSession();
     const router = useRouter();
     const [error, setError] = useState({});
-
+    const [isSuccessfullySubmitted, setIsSuccessfullySubmitted] =
+        useState(false);
     const {
         control,
         register,
@@ -100,7 +101,7 @@ export default function FormLogin() {
                 console.error("Erreur lors du login");
                 router.push("/login");
             } else {
-                router.push(decodedCallbackURL);
+                setIsSuccessfullySubmitted(true);
             }
         });
     };
@@ -111,6 +112,11 @@ export default function FormLogin() {
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col gap-6 text-left"
             >
+                {isSuccessfullySubmitted && (
+                    <div className="p-4 text-lg text-center text-bold rounded-lg bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                        Bonjour {session.user.surname}, vous êtes connecté !
+                    </div>
+                )}
                 <Input
                     type="email"
                     name="username"
@@ -153,7 +159,7 @@ export default function FormLogin() {
                 </span>
                 <span className="w-full text-center">
                     Mot de passe oublié ?{" "}
-                    <Link href="/forgotpassword" className="underline">
+                    <Link href="/resetpassword" className="underline">
                         Réinitialiser le mot de passe
                     </Link>
                 </span>

@@ -3,17 +3,16 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import validator from "validator";
 import { object, ref, string } from "yup";
 import Button from "@/components/Fields/Button";
 import Input from "@/components/Form/Input";
 
-import TextField from "@mui/material/TextField";
-
 import AuthError from "@/components/error/AuthError.jsx";
 import { useSession } from "next-auth/react";
+import LoaderIcon from "@/components/Icons/LoaderIcon";
 
 const schema = object({
     name: string()
@@ -46,6 +45,8 @@ const schema = object({
 export default function FormRegister() {
     const { data: session } = useSession();
     const router = useRouter();
+    const [isSuccessfullySubmitted, setIsSuccessfullySubmitted] =
+        useState(false);
     useEffect(() => {
         if (session && session.user) {
             router.push("/");
@@ -59,6 +60,7 @@ export default function FormRegister() {
         register,
         getValues,
         handleSubmit,
+        reset,
         watch,
         formState: { errors },
     } = useForm({
@@ -66,6 +68,7 @@ export default function FormRegister() {
     });
     const inputProps = { register, errors };
     const [loading, setLoading] = useState(false);
+
     const onSubmit = async (data) => {
         const { name, surname, mail, password, confirmPassword } = data;
 
@@ -78,8 +81,8 @@ export default function FormRegister() {
             confirmPassword: validator.escape(confirmPassword),
         };
         try {
-            setLoading(true);
             console.log(data);
+            setLoading(true);
 
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API}/api/register`,
@@ -103,9 +106,10 @@ export default function FormRegister() {
                     responseData
                 );
             } else {
+                reset();
+                setIsSuccessfullySubmitted(true);
                 // L'utilisateur a été créé avec succès
                 console.log("Utilisateur créé avec succès !");
-                router.push("/login");
             }
         } catch (error) {
             console.error(
@@ -123,6 +127,16 @@ export default function FormRegister() {
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col gap-6 text-left"
             >
+                {isSuccessfullySubmitted && (
+                    <div className="p-4 text-lg text-center text-bold rounded-lg bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                        Bienvenue chez Housechain !
+                        <p className="m-2 text-justify text-bg">
+                            Pour confirmer votre inscription, merci de vérifier
+                            votre boîte mail et de cliquer sur le lien que nous
+                            venons de vous envoyer.
+                        </p>
+                    </div>
+                )}
                 <Input
                     type="text"
                     name="name"
@@ -143,7 +157,7 @@ export default function FormRegister() {
                 />
                 <Input
                     type="email"
-                    name="username"
+                    name="mail"
                     label="Votre adresse email"
                     className="border rounded-lg py-2 px-2"
                     placeholder="exemple@housechain.com"
@@ -168,21 +182,20 @@ export default function FormRegister() {
                     validation={{ required: true }}
                     {...inputProps}
                 />
-                <div className="flex justify-center w-full gap-4 text-white rounded-lg">
+                <div className="flex justify-center w-full gap-4 text-white rounded-lg items-center">
                     <Button
                         disabled={loading}
+                        submitted={isSuccessfullySubmitted}
                         type="submit"
-                        title="Se connecter"
-                        className="bg-move bg-gradient-to-r from-purple via-red to-purple rounded-lg py-3 px-3 text-xl font-semibold"
-                    >
-                        {loading && (
-                            <LoaderIcon className="animate-spin h-5 w-5" />
-                        )}
-                        {error?.message && (
-                            <AuthError error={error} setError={setError} />
-                        )}
-                        <span>S'inscrire</span>
-                    </Button>
+                        title="S'inscrire"
+                        className="rounded-lg py-3 px-3 text-xl font-semibold bg-move bg-gradient-to-r from-purple via-red to-purple"
+                    ></Button>
+                    {error?.message && (
+                        <AuthError error={error} setError={setError} />
+                    )}
+                    {loading && (
+                        <LoaderIcon className="absolute left-50 animate-spin h-10 w-10" />
+                    )}
                 </div>
                 <span className="w-full text-center">
                     Déjà inscrit ?{" "}

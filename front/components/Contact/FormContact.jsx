@@ -23,7 +23,6 @@ const FormContact = () => {
     } = useForm();
 
     const onSubmit = (data) => {
-        console.log(data);
         fetch(`${process.env.NEXT_PUBLIC_API}/api/contacts`, {
             method: "POST",
             headers: {
@@ -33,7 +32,6 @@ const FormContact = () => {
         }).then((response) => {
             if (response.status === 400) {
                 response.json().then((data) => {
-                    // console.log(response, data);
                     processError(data.errors, setError);
                 });
             }
@@ -48,13 +46,13 @@ const FormContact = () => {
 
     return (
         <form
-            className="w-3/5 mx-auto"
+            className="w-3/5 mx-auto text-left"
             action=""
             method="post"
             onSubmit={handleSubmit(onSubmit)}
         >
             {isSuccessfullySubmitted && (
-                <div className="p-4 mb-4 text-lg text-bold rounded-lg bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                <div className="p-4 text-lg text-center text-bold rounded-lg bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
                     Merci ! Votre message a bien été envoyé.
                 </div>
             )}
@@ -62,7 +60,7 @@ const FormContact = () => {
                 type="text"
                 name="name"
                 label="Votre nom"
-                labelClassName="text-[0.7rem] mt-9"
+                labelClassName="text-[1rem] mt-5"
                 className="border border-gray-400 rounded px-2 py-1.5 w-full placeholder:text-[0.7rem] placeholder:text-black"
                 placeholder="Dupond"
                 validation={{ required: true }}
@@ -72,7 +70,7 @@ const FormContact = () => {
                 type="text"
                 name="surname"
                 label="Votre prénom"
-                labelClassName="text-[0.7rem] mt-9"
+                labelClassName="text-[1rem] mt-5"
                 className="border border-gray-400 rounded px-2 py-1.5 w-full placeholder:text-[0.7rem] placeholder:text-black"
                 placeholder="Jean"
                 validation={{ required: true }}
@@ -83,7 +81,7 @@ const FormContact = () => {
                 type="email"
                 name="mail"
                 label="Votre adresse mail"
-                labelClassName="text-[0.7rem] mt-9"
+                labelClassName="text-[1rem] mt-5"
                 className="border border-gray-400 rounded px-2 py-1.5 w-full placeholder:text-[0.7rem] placeholder:text-black"
                 placeholder="exemple@housechain.com"
                 validation={{ required: true }}
@@ -93,26 +91,27 @@ const FormContact = () => {
             <Textarea
                 name="message"
                 label="Message"
-                labelClassName="text-[0.7rem] mt-9"
-                className="border border-gray-400 rounded px-2 py-1.5 w-full placeholder:text-[0.7rem] placeholder:text-black resize-none"
+                labelClassName="text-[1rem] mt-5"
+                className="border border-gray-400 rounded px-2 py-1.5 w-full placeholder:text-[0.7rem] placeholder:text-black resize-none mb-5"
                 placeholder="Ecrivez ici votre message..."
                 validation={{ required: true }}
-                rows="3"
+                rows="5"
                 {...inputProps}
             />
-
-            <div className="flex flex-col justify-center w-full gap-4 text-white rounded-lg">
+            <div className="relative mx-auto text-white rounded-lg">
                 <Button
                     disabled={isSubmitting}
+                    submitted={isSuccessfullySubmitted}
                     type="submit"
                     title="Envoyer"
-                    className="bg-move bg-gradient-to-r from-purple via-red to-purple rounded-lg py-3 px-3 text-xl font-semibold mw-auto mt-4"
-                >
-                    {isSubmitting && (
-                        <LoaderIcon className="animate-spin h-5 w-5" />
-                    )}
-                </Button>
-                <Link href="/" className="underline mt-4 text-bg">
+                    className="bg-move bg-gradient-to-r from-purple via-red to-purple rounded-lg py-3 px-3 text-xl font-semibold mx-auto mt-4"
+                ></Button>
+                {isSubmitting && (
+                    <LoaderIcon className="absolute left-[50%] top-2 animate-spin h-10 w-10" />
+                )}
+            </div>
+            <div className="text-center mb-4 mt-5">
+                <Link href="/" className="underline mx-auto">
                     Retour à la page d'accueil
                 </Link>
             </div>

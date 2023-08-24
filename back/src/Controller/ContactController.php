@@ -12,6 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class ContactController extends AbstractController
 {
@@ -36,7 +38,7 @@ class ContactController extends AbstractController
             ref: new Model(type: ContactDTO::class)
         )
     )]
-    public function postContact(Request $request, FormErrorConverterService $errorConverter): JsonResponse
+    public function postContact(Request $request, FormErrorConverterService $errorConverter, MailerInterface $mailer): JsonResponse
     {
 
         $contactDTO = new ContactDTO();
@@ -49,6 +51,14 @@ class ContactController extends AbstractController
                 'email' => $contactDTO->getMail(),
                 'message' => $contactDTO->getMessage(),
             ];
+
+            $email = (new Email())
+            ->from($responseData['email'])
+            ->to('floriangaudin13@gmail.com')
+            ->subject('Nouveau message de ' . $responseData['email'])
+            ->text('')
+            ->html('Vous avez reçu un nouveau message de ' . $responseData['surname'] . " " . $responseData['name'] . ": <br><br><br>" . $responseData['message']);
+            $mailer->send($email);
     
             return new JsonResponse(['message' => 'Formulaire de contact envoyé avec succès.', $responseData], 201);
             
@@ -59,5 +69,4 @@ class ContactController extends AbstractController
             return new JsonResponse(['errors' => $errorData], 400);
         }
     }
-
 }

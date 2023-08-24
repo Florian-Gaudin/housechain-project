@@ -9,7 +9,6 @@ export default function Textarea({
     validation,
     placeholder,
 }) {
-    console.log("Textarea component received:", errors, errors[name]?.message);
     return (
         <div className="flex flex-col">
             <label className={labelClassName}>{`${label}${
