@@ -19,7 +19,7 @@ const ShowProperties = () => {
             if (!componentMounted) {
                 //récupération des données sur les propriétés, les types
                 const propertiesDataResponse = await propertiesData.json();
-
+                console.log(propertiesDataResponse);
                 // on initialise data et filter
                 setData(propertiesDataResponse);
                 setFilteredData(propertiesDataResponse);

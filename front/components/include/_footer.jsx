@@ -20,14 +20,22 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="flex flex-col justify-center text-center">
-                    <p className="font-title font-bold text-lg uppercase bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                    <a
+                        href="/contact"
+                        className="font-title font-bold text-lg uppercase bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text"
+                    >
                         Contactez-nous
-                    </p>
+                    </a>
                     <div className="flex flex-row justify-center gap-5 p-2">
                         <p className="text-bglight text-center">
                             contact@housechain.com
                             <br />
-                            Charleville-Mézières
+                            <a
+                                href="/contact"
+                                className="underline underline-offset-4"
+                            >
+                                Nous écrire
+                            </a>
                         </p>
                     </div>
                 </div>
