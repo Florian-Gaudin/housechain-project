@@ -47,19 +47,19 @@ security:
         - { path: ^/api/doc, roles: PUBLIC_ACCESS }
         - {
               path: ^/api/properties,
-              roles: IS_AUTHENTICATED_FULLY,
+              roles: ROLE_ADMIN,
               methods: [POST, PUT, DELETE],
           }
         - { path: ^/api/properties, roles: PUBLIC_ACCESS, methods: [GET] }
         - {
               path: ^/api/images,
-              roles: IS_AUTHENTICATED_FULLY,
+              roles: ROLE_ADMIN,
               methods: [POST, PUT, DELETE],
           }
         - { path: ^/api/images, roles: PUBLIC_ACCESS, methods: [GET] }
         - {
               path: ^/api/income_frequencies,
-              roles: IS_AUTHENTICATED_FULLY,
+              roles: ROLE_ADMIN,
               methods: [POST, PUT, DELETE],
           }
         - {
@@ -69,25 +69,17 @@ security:
           }
         - {
               path: ^/api/roles,
-              roles: IS_AUTHENTICATED_FULLY,
+              roles: ROLE_ADMIN,
               methods: [GET, POST, PUT, DELETE],
           }
         - { path: ^/api/securitytokens, roles: PUBLIC_ACCESS, methods: [GET] }
         - {
               path: ^/api/securitytokens,
-              roles: IS_AUTHENTICATED_FULLY,
+              roles: ROLE_ADMIN,
               methods: [POST, PUT, DELETE],
           }
-        - {
-              path: ^/api/securitytokenwallets,
-              roles: IS_AUTHENTICATED_FULLY,
-              methods: [GET, POST, PUT, DELETE],
-          }
-        - {
-              path: ^/api/securitytokenwallets,
-              roles: IS_AUTHENTICATED_FULLY,
-              methods: [POST],
-          }
+        - { path: ^/api/securitytokenwallets, roles: ROLE_ADMIN }
+        - { path: ^/api/mywallets, roles: IS_AUTHENTICATED_FULLY }
         - {
               path: ^/api/types,
               roles: IS_AUTHENTICATED_FULLY,
@@ -95,12 +87,14 @@ security:
           }
         - { path: ^/api/types, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [POST] }
-        - { path: ^/api/usersbytoken, roles: PUBLIC_ACCESS, methods: [GET] }
         - {
               path: ^/api/users,
               roles: IS_AUTHENTICATED_FULLY,
               methods: [GET, PUT, DELETE],
           }
+        - { path: ^/api/usersbytoken, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/news, roles: PUBLIC_ACCESS, methods: [GET] }
+
 when@test:
     security:
         password_hashers:

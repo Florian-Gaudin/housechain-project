@@ -61,9 +61,8 @@ class AdminDashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToLogout('Se déconnecter', 'fa fa-exit');
-        yield MenuItem::linkToUrl('Retour sur Housechain', null, 'http://localhost:3000/');
+        yield MenuItem::linkToUrl('Retour sur Housechain', 'fa fa-home', 'http://localhost:3000/');
         yield MenuItem::section('Propriétés');
         yield MenuItem::subMenu('Actions', 'fa fa-bar')->setSubItems(
             [

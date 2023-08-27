@@ -24,6 +24,7 @@ class ImageController extends AbstractController
     public function getAllImages(ImageRepository $imageRepository): JsonResponse
     {
         $images = $imageRepository->findAll();
+        
         return $this->json($images, 200, [], ['groups' => ['getImages']]);
     }
 
@@ -52,14 +53,14 @@ class ImageController extends AbstractController
 
         // Retrieve the associated images of the property.
         $images = $property->getPropertyImages();
-
         $imageData = [];
         foreach ($images as $image) {
             $imageData[] = [
                 'id' => $image->getId(),
-                'url' => $image->getUrl(),
+                'url' => $image->setUrl(str_replace("\\", "/", $_SERVER["DOCUMENT_ROOT"]) . "upload/images/property/" . $image->getUrl()),
                 'type' => $image->getType(),
                 'description' => $image->getDescription(),
+
                 // Add other image properties you want to include in the response.
             ];
         }

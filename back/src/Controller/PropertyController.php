@@ -62,6 +62,10 @@ class PropertyController extends AbstractController
         $allProperties = $propertyRepository->findAll();
         foreach ($allProperties as $property) {
             $this->updatePropertyStatus($property->getId());
+            $images = $property->getPropertyImages();
+            foreach ($images as $image) {
+                $image->setUrl("http://localhost:8000/upload/images/property/" . $image->getUrl());
+            }
         }
 
         $page = $request->get('page', 1);

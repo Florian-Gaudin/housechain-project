@@ -148,4 +148,9 @@ class SecurityToken
 
         return $this;
     }
+
+    public function __toString()
+    {
+    return $this->getStName();
+    }
 }
