@@ -57,7 +57,7 @@ class ImageController extends AbstractController
         foreach ($images as $image) {
             $imageData[] = [
                 'id' => $image->getId(),
-                'url' => $image->setUrl(str_replace("\\", "/", $_SERVER["DOCUMENT_ROOT"]) . "upload/images/property/" . $image->getUrl()),
+                'url' => $image->getUrl(),
                 'type' => $image->getType(),
                 'description' => $image->getDescription(),
 

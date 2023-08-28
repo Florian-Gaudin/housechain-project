@@ -59,25 +59,35 @@ class PropertyController extends AbstractController
     #[Route('/api/properties', name: 'properties', methods: ['GET'])]
     public function getPropertiesList(PropertyRepository $propertyRepository, Request $request, TagAwareCacheInterface $cache, SerializerInterface $serializer): JsonResponse
     {
+        // $allProperties = $propertyRepository->findAll();
+        // foreach ($allProperties as $property) {
+        //     $this->updatePropertyStatus($property->getId());
+        // }
+
+        // $page = $request->get('page', 1);
+        // $limit = $request->get('limit', 100);
+
+        // $idCache = "getAllProperties-" . $page . "-" . $limit;
+        // $jsonPropertiesList = $cache->get($idCache, function (ItemInterface $item) use ($propertyRepository, $page, $limit, $serializer) {
+        //     $item->tag("propertiesCache");
+        //     $propertiesList = $propertyRepository->findAllWithPagination($page, $limit);
+
+        //     return $serializer->serialize($propertiesList, 'json', ['groups' => 'getProperties']);
+        // });
+        // return new JsonResponse($jsonPropertiesList, 200, [], true);
+
         $allProperties = $propertyRepository->findAll();
         foreach ($allProperties as $property) {
             $this->updatePropertyStatus($property->getId());
-            $images = $property->getPropertyImages();
-            foreach ($images as $image) {
-                $image->setUrl("http://localhost:8000/upload/images/property/" . $image->getUrl());
-            }
         }
 
         $page = $request->get('page', 1);
         $limit = $request->get('limit', 100);
 
-        $idCache = "getAllProperties-" . $page . "-" . $limit;
-        $jsonPropertiesList = $cache->get($idCache, function (ItemInterface $item) use ($propertyRepository, $page, $limit, $serializer) {
-            $item->tag("propertiesCache");
-            $propertiesList = $propertyRepository->findAllWithPagination($page, $limit);
+        $propertiesList = $propertyRepository->findAllWithPagination($page, $limit);
 
-            return $serializer->serialize($propertiesList, 'json', ['groups' => 'getProperties']);
-        });
+        $jsonPropertiesList = $serializer->serialize($propertiesList, 'json', ['groups' => 'getProperties']);
+        
         return new JsonResponse($jsonPropertiesList, 200, [], true);
     }
 

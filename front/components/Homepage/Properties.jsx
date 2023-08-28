@@ -22,6 +22,7 @@ export default function Properties() {
                 console.error("Error fetching data:", error);
             });
     }, []);
+    console.log(propertiesData);
     return (
         <Provider store={store}>
             <div className="">

@@ -30,7 +30,7 @@ class PropertyCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             TextField::new('name', 'Nom'),
             TextField::new('city', 'Ville'),
-            MoneyField::new('totalprice', 'Prix Total')->setCurrency('EUR'),
+            NumberField::new('totalprice', 'Prix Total'),
             NumberField::new('yield', 'Rendement'),
             TextareaField::new('description'),
             DateTimeField::new('createdAt', 'Date de création')->hideOnForm(),

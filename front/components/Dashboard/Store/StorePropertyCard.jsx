@@ -74,7 +74,7 @@ const StorePropertyCard = ({ property }) => {
                                     <SwiperSlide key={element.id}>
                                         <img
                                             className="object-cover rounded-lg aspect-[16/9]"
-                                            src={element.url}
+                                            src={`http://localhost:8000/upload/images/property/${element.url}`}
                                             alt={element.description}
                                         />
                                         <div className="group flex absolute top-5 right-5 items-center cursor-pointer bg-white/70 rounded-lg p-2">
@@ -152,12 +152,12 @@ const StorePropertyCard = ({ property }) => {
                                 {availableToken === 0 ? (
                                     "Il n'y a plus de part disponible !"
                                 ) : (
-                                    <div>
+                                    <>
                                         <span className="text-white">
                                             Il reste encore
                                         </span>{" "}
                                         {availableToken} <span>parts !</span>
-                                    </div>
+                                    </>
                                 )}
                             </p>
                             <h3 className="text-xl font-bold text-bg">

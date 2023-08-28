@@ -50,9 +50,9 @@ class AdminDashboardController extends AbstractDashboardController
         // user menu with some menu items already created ("sign out", "exit impersonation", etc.)
         // if you prefer to create the user menu from scratch, use: return UserMenu::new()->...
         return parent::configureUserMenu($user)
-            ->setName($user->getName())
-            ->displayUserName(true)
-            ->setGravatarEmail($user->getMail())
+            // ->setName($user->getName())
+            // ->displayUserName(true)
+            // ->setGravatarEmail($user->getMail())
             // you can use any type of menu item, except submenus
             ->addMenuItems([
                 MenuItem::section(),

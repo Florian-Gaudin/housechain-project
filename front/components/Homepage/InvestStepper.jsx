@@ -28,10 +28,12 @@ const InvestStepper = () => {
                             </div>
                             <div className="max-h-0 text-justify px-3 overflow-hidden duration-1000 group-focus:max-h-40">
                                 <span className="mt-4">
-                                    Remplissez le formulaire d'inscription. La
-                                    création de votre compte permettra
-                                    l'identification et la création de votre
-                                    portefeuille numérique.
+                                    Remplissez le formulaire d'inscription et
+                                    valider votre inscription en cliquant sur le
+                                    lien que vous recevrez par e-mail.
+                                    <br /> Et c'est tout ! <br /> La création de
+                                    votre compte permettra l'identification et
+                                    la création de votre portefeuille numérique.
                                 </span>
                             </div>
                         </div>
@@ -62,6 +64,9 @@ const InvestStepper = () => {
                                 <span className="mt-4">
                                     Faites votre choix parmi une liste de biens
                                     sélectionnés par nos experts immobiliers.
+                                    <br /> Utilisez nos filtres pour trouver les
+                                    biens qui vous intéressent selon vos
+                                    critères.
                                 </span>
                             </div>
                         </div>

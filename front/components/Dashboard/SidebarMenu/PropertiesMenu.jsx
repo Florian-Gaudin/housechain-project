@@ -56,9 +56,12 @@ const PropertiesMenu = () => {
                 setData(propertiesDataResponse);
                 setFilteredData(propertiesDataResponse);
                 //on récupère la liste des villes
-                const allCities = propertiesDataResponse.map(
-                    (property) => property.city
-                );
+                const allCities = propertiesDataResponse
+                    .map((property) => property.city) // On récupère toutes les villes
+                    .filter(
+                        (city, index, self) => self.indexOf(city) === index
+                    ); // On filtre pour ne garder que les valeurs uniques
+
                 setCities(allCities);
                 // on récupère les types de propriétés
                 const allTypes = typesDataResponse.map(

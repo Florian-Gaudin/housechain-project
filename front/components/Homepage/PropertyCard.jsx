@@ -16,7 +16,7 @@ const PropertyCard = ({ propertyData, bestProperties, profitProperties }) => {
                     <img
                         key={element.id}
                         className="max-h-[250px] w-full object-cover"
-                        src={element.url}
+                        src={`http://localhost:8000/upload/images/property/${element.url}`}
                         alt={element.description}
                     />
                     <div className="group flex absolute top-5 right-5 items-center cursor-pointer bg-white/70 rounded-lg p-2">
@@ -43,7 +43,7 @@ const PropertyCard = ({ propertyData, bestProperties, profitProperties }) => {
                         <h2 className="text-xl font-bold text-bg">
                             {propertyData.name}{" "}
                             <span className="italic text-sm">
-                                ( {propertyData.type.type_name} )
+                                - {propertyData.type.type_name}
                             </span>
                         </h2>
 
@@ -53,35 +53,39 @@ const PropertyCard = ({ propertyData, bestProperties, profitProperties }) => {
                         {propertyData.description}
                     </div>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between flex-col">
                     <div className="flex items-center">
-                        <img src="https://img.icons8.com/ios-glyphs/24/null/expand--v1.png" />
                         <p className="ml-2 text-sm font-medium">
-                            Prix du token :
+                            Prix du token :{" "}
+                            {propertyData.securityTokens[0].stPrice} €
                         </p>
                     </div>
                     <div className="flex items-center">
-                        <img src="https://img.icons8.com/windows/24/null/bedroom.png" />
                         <p className="ml-2 text-sm font-medium">
-                            {Math.floor(Math.random() * 3001)} parts disponibles
+                            {propertyData.securityTokens[0].stActualQuantity ===
+                            0
+                                ? "Produit épuisé"
+                                : `${propertyData.securityTokens[0].stActualQuantity} parts disponibles`}
                         </p>
                     </div>
                     <div className="flex items-center">
-                        <img src="https://img.icons8.com/pastel-glyph/24/null/bath--v2.png" />
                         <p className="ml-2 text-sm font-medium">
-                            Intérêt attendu par token :
+                            Statut : {propertyData.status.type}
                         </p>
                     </div>
                 </div>
                 <div className="mt-4">
                     <div className="ml-2  text-sm font-medium text-white">
-                        <p className="text-sm font-extrabold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">{`Rendement Net Cible : ${propertyData.yield} %`}</p>
+                        <p className="text-sm text-center pb-2 font-extrabold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">{`Rendement Net Cible : ${propertyData.yield} %`}</p>
                     </div>
                 </div>
                 <div className="flex justify-center">
-                    <button className="text-white flex align-center text-sm px-5 py-3 uppercase font-title font-bold rounded-lg bg-move bg-gradient-to-r from-purple via-red to-purple">
+                    <a
+                        href="/dashboard"
+                        className="text-white flex align-center text-sm px-5 py-3 uppercase font-title font-bold rounded-lg bg-move bg-gradient-to-r from-purple via-red to-purple"
+                    >
                         Investir dans cette propriété !
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

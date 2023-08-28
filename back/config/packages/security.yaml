@@ -86,13 +86,13 @@ security:
               methods: [POST, PUT, DELETE],
           }
         - { path: ^/api/types, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/usersbytoken, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [POST] }
         - {
               path: ^/api/users,
               roles: IS_AUTHENTICATED_FULLY,
               methods: [GET, PUT, DELETE],
           }
-        - { path: ^/api/usersbytoken, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/news, roles: PUBLIC_ACCESS, methods: [GET] }
 
 when@test:

@@ -31,7 +31,7 @@ const Services = () => {
     }, []);
 
     return (
-        <div className="text-center min-h-[100vh]">
+        <div className="text-center max-h-[100vh]">
             <SwiperServices />
         </div>
     );

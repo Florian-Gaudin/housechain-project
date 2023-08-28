@@ -13,12 +13,9 @@ module.exports = {
         colors: {
             transparent: "transparent",
             current: "currentColor",
-            white: "#ffffff",
+            white: "#f5f5f5",
             purple: "#9969C0",
             red: "#FC1A4A",
-            yellow1: "rgb(169,121,1)",
-            yellow2: "rgb(239,181,48)",
-            yellow3: "rgb(252,220,140)",
             bg: "rgb(14,12,49)",
             bglight: "rgb(183, 182, 207)",
         },

@@ -168,7 +168,7 @@ const DashboardLayout = () => {
                                 contentSvg={myWalletSvg}
                                 disabled={noSession}
                             />
-                            <OpenSidebarMenuButton
+                            <div
                                 onClick={() =>
                                     dispatch({
                                         type: "TOGGLE_SIDEBAR",
@@ -177,9 +177,16 @@ const DashboardLayout = () => {
                                         mainTitle: profileTitle,
                                     })
                                 }
-                                contentSvg={userAvatar}
                                 disabled={noSession}
-                            />
+                                className={`p-2 hover:shadow-xl transform transition-transform duration-1000 ease-in-out opacity-80 shadow-lg rounded-lg ${
+                                    noSession
+                                        ? "cursor-not-allowed"
+                                        : "cursor-pointer hover:opacity-100 hover:scale-110"
+                                }`}
+                            >
+                                <span className="sr-only">Menu latéral</span>
+                                {userAvatar}
+                            </div>
                         </div>
                         <SettingsButton noSession={noSession} />
                     </nav>

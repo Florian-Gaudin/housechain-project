@@ -29,7 +29,7 @@ class ImageCrudController extends AbstractCrudController
                 ->setChoices([
                     'Principale' => 'main',
                     'Secondaire' => 'secondary']),
-            TextEditorField::new('description'),
+            TextField::new('description'),
             ImageField::new('url')
                 ->setBasePath(self::IMAGES_BASE_PATH)
                 ->setUploadDir(self::IMAGES_UPLOAD_DIR)

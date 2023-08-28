@@ -1,15 +1,59 @@
 "use client";
 import MenuSocials from "./Fields/MenuSocials";
 import indexSvg from "../public/assets/svg/index-svg";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { signOut, useSession } from "next-auth/react";
+import { useDispatch } from "react-redux";
+import {
+    REMOVE_ACTIVE_USER,
+    SET_ACTIVE_USER,
+} from "@/services/reducer/slice/authSlice";
 
 export const Menu = ({ menuOpen, setMenuOpen }) => {
-    const navigation = [
-        { name: "Espace personnel", href: "/account" },
-        { name: "Nos Propriétés", href: "/store" },
-        { name: "Marché crypto", href: "/market" },
+    const { data: session, status } = useSession();
+    const [navigation, setNavigation] = useState([
+        { name: "S'inscrire", href: "/register" },
+        { name: "Se connecter", href: "/login" },
+        { name: "Dashboard", href: "/dashboard" },
         { name: "Contact", href: "/contact" },
-    ];
+    ]);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const dispatch = useDispatch();
+    // Monitor currently signed in user
+    useEffect(() => {
+        if (session && session?.user) {
+            console.log(session.user);
+            const userId = session.user.id;
+            const userName = session.user.name;
+            const userSurname = session.user.surname;
+            const userMail = session.user.mail;
+            dispatch(
+                SET_ACTIVE_USER({
+                    mail: userMail,
+                    userName: userName,
+                    userSurname: userSurname,
+                    userId: userId,
+                })
+            );
+            setNavigation([
+                { name: "Mon Dashboard", href: "/dashboard" },
+                { name: "Contact", href: "/contact" },
+            ]);
+            if (session.user.role.name === "ROLE_ADMIN") {
+                setIsAdmin(true);
+            }
+        }
+        if (!session) {
+            dispatch(REMOVE_ACTIVE_USER);
+            setIsAdmin(false);
+            setNavigation([
+                { name: "S'inscrire", href: "/register" },
+                { name: "Se connecter", href: "/login" },
+                { name: "Dashboard", href: "/dashboard" },
+                { name: "Contact", href: "/contact" },
+            ]);
+        }
+    }, [session, dispatch]);
 
     const menuRef = useRef();
 
@@ -57,14 +101,21 @@ export const Menu = ({ menuOpen, setMenuOpen }) => {
                     </a>
                     <span className="w-[70%] h-[1px] block border border-solid border-bglight mx-auto mt-10"></span>
                     <div className="py-6">
-                        <div className="mx-auto group">
-                            <a
-                                href="/login"
-                                className="-mx-3 block rounded-lg py-5 px-16 text-sm md:text-lg font-bold leading-7 uppercase font-title bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text text-center group-hover:scale-150 transition-all duration-1000"
-                            >
-                                Se connecter
-                            </a>
-                        </div>
+                        {isAdmin ? (
+                            <div className="mx-auto group">
+                                <a
+                                    href="http://localhost:8000/admin/login"
+                                    className="-mx-3 block rounded-lg py-5 px-16 text-sm md:text-lg font-bold leading-7 uppercase font-title bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text text-center group-hover:scale-150 transition-all duration-1000"
+                                >
+                                    Interface Administrateur
+                                </a>
+                            </div>
+                        ) : (
+                            <p className="-mx-3 block rounded-lg py-5 px-16 text-sm md:text-lg font-bold leading-7 uppercase font-title bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text text-center group-hover:scale-150 transition-all duration-1000">
+                                Bienvenue{" "}
+                                {session?.user ? session.user.surname : ""}
+                            </p>
+                        )}
                     </div>
                     <span className="w-[70%] h-[1px] block border border-solid border-bglight mx-auto mb-5"></span>
                 </div>
@@ -92,6 +143,23 @@ export const Menu = ({ menuOpen, setMenuOpen }) => {
                                     </a>
                                 </div>
                             ))}
+                            {session?.user ? (
+                                <div className="hover:bg-bglight group">
+                                    <button
+                                        onClick={() => {
+                                            signOut({
+                                                redirect: false,
+                                                callbackUrl: "/",
+                                            });
+                                        }}
+                                        className="-mx-3 flex flex-row items-center gap-6 py-5 px-16 text-lg font-bold leading-7 uppercase font-title bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text cursor-pointer"
+                                    >
+                                        {indexSvg.anglesRight}Déconnexion
+                                    </button>
+                                </div>
+                            ) : (
+                                ""
+                            )}
                         </div>
                         <MenuSocials />
                     </div>
