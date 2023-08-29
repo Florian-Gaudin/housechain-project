@@ -185,7 +185,7 @@ const Contact = () => {
                                     </li>
                                     <li className="text-white text-xl p-2">
                                         Julien sur le dashboard : l'usage des
-                                        filtres grâce au reducer
+                                        filtres grâce au contexte
                                     </li>
                                     <li className="text-white text-xl p-2">
                                         Julien ajoute ses cryptos préférées à
@@ -1510,33 +1510,53 @@ const Contact = () => {
                             </h2>
                             <h3 className="mt-5 ml-5 text-xl text-left uppercase font-title font-extrabold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
                                 Julien sur le dashboard : l'usage des filtres
-                                grâce au reducer
+                                grâce au contexte
                             </h3>
                         </a>
                         <div className="bg-white/90 rounded-lg w-[90%] mx-auto mt-5">
                             <h3 className="pt-10 text-center text-6xl uppercase font-title font-extrabold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
                                 Julien sur le dashboard :<br /> l'usage des
-                                filtres grâce au reducer
+                                filtres grâce au contexte
                             </h3>
                             <div className="flex flex-col py-10 gap-4">
                                 <img
                                     className="max-w-[80%] mx-auto rounded-lg object-cover"
-                                    src="/images/presentation/data1.png"
+                                    src="/images/presentation/reducer1.png"
                                     alt=""
                                 />
                                 <img
                                     className="max-w-[80%] mx-auto rounded-lg object-cover"
-                                    src="/images/presentation/data2.png"
+                                    src="/images/presentation/reducer2.png"
                                     alt=""
                                 />
                                 <img
                                     className="max-w-[80%] mx-auto rounded-lg object-cover"
-                                    src="/images/presentation/data3.png"
+                                    src="/images/presentation/reducer3.png"
                                     alt=""
                                 />
                                 <img
                                     className="max-w-[80%] mx-auto rounded-lg object-cover"
-                                    src="/images/presentation/data4.png"
+                                    src="/images/presentation/reducer4.png"
+                                    alt=""
+                                />
+                                <img
+                                    className="max-w-[80%] mx-auto rounded-lg object-cover"
+                                    src="/images/presentation/reducer5.png"
+                                    alt=""
+                                />
+                                <img
+                                    className="max-w-[80%] mx-auto rounded-lg object-cover"
+                                    src="/images/presentation/reducer6.png"
+                                    alt=""
+                                />
+                                <img
+                                    className="max-w-[80%] mx-auto rounded-lg object-cover"
+                                    src="/images/presentation/reducer7.png"
+                                    alt=""
+                                />
+                                <img
+                                    className="max-w-[80%] mx-auto rounded-lg object-cover"
+                                    src="/images/presentation/reducer8.png"
                                     alt=""
                                 />
                             </div>

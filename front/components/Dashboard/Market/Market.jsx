@@ -1,7 +1,4 @@
 "use client";
-import { configureStore } from "@reduxjs/toolkit";
-import { Provider } from "react-redux";
-import rootReducer from "../../../services/reducer";
 import HeaderInfos from "@/components/Market/HeaderInfos";
 import GlobalChart from "@/components/Market/GlobalChart";
 import "../../../styles/market.scss";
@@ -11,10 +8,7 @@ import Table from "@/components/Market/Table";
 
 export default function Market({ noSession }) {
     const [loading, setLoading] = useState(false);
-    const store = configureStore({
-        reducer: rootReducer,
-        devTools: true,
-    });
+
     const [coinsData, setCoinsData] = useState([]);
     useEffect(() => {
         setLoading(true);
@@ -35,7 +29,7 @@ export default function Market({ noSession }) {
         setLoading(false);
     }, []);
     return (
-        <Provider store={store}>
+        <>
             {noSession ? (
                 <p>Vous devez vous connecter pour voir ce contenu.</p>
             ) : (
@@ -53,6 +47,6 @@ export default function Market({ noSession }) {
                     )}
                 </div>
             )}
-        </Provider>
+        </>
     );
 }

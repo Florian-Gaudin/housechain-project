@@ -4,6 +4,7 @@ import TableLine from "./TableLine";
 import ToTop from "../Fields/ToTopButton";
 import { useSelector } from "react-redux";
 import { isStableCoin } from "@/services/stablecoinList";
+import HousechainLine from "./HousechainLine";
 
 const Table = ({ coinsData }) => {
     const [rangeNumber, setRangeNumber] = useState(100);
@@ -27,6 +28,7 @@ const Table = ({ coinsData }) => {
 
     return (
         <div className="table-container">
+            <HousechainLine />
             <ul className="table-header">
                 <div className="range-container">
                     <span>
@@ -70,6 +72,7 @@ const Table = ({ coinsData }) => {
                     </li>
                 ))}
             </ul>
+
             {coinsData &&
                 coinsData
                     .slice(0, rangeNumber)
@@ -183,7 +186,9 @@ const Table = ({ coinsData }) => {
                         }
                     })
                     .map((coin, index) => (
-                        <TableLine coin={coin} index={index} key={index} />
+                        <>
+                            <TableLine coin={coin} index={index} key={index} />
+                        </>
                     ))}
         </div>
     );

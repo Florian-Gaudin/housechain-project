@@ -26,7 +26,9 @@ const TableLine = ({ coin, index }) => {
         <div className="table-line">
             <div className="infos-container">
                 <StarIcon coinId={coin.id} />
-                <p>{index + 1}</p>
+                <p className="text-sm text-left font-bold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                    {index + 1}
+                </p>
                 <div className="img">
                     <img src={coin.image} height="20" alt="logo" />
                 </div>
@@ -46,8 +48,12 @@ const TableLine = ({ coin, index }) => {
                             )}
                         </div>
                     </div>
-                    <h4>{coin.name}</h4>
-                    <span>- {coin.symbol.toUpperCase()}</span>
+                    <h4 className="text-sm text-left font-bold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                        {coin.name}
+                    </h4>
+                    <h5 className="text-sm text-left font-bold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                        - {coin.symbol.toUpperCase()}
+                    </h5>
                     <a
                         target="_blank"
                         href={
