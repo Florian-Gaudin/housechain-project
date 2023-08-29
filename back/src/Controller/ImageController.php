@@ -10,11 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 
 class ImageController extends AbstractController
@@ -88,7 +86,7 @@ class ImageController extends AbstractController
     #[OA\Tag(name: 'Images')]
     #[Route('/api/images', name: 'addImageToProperty', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants pour ajouter une image')]
-    public function createImage(Request $request, EntityManagerInterface $em, SerializerInterface $serializer, UrlGeneratorInterface $urlGenerator): JsonResponse 
+    public function createImage(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): JsonResponse 
     {
         $data = json_decode($request->getContent(), true);
 

@@ -7,9 +7,11 @@ const Welcome = () => {
     return (
         <>
             <div className="text-center fade-in">
-                <h1 className="text-4xl md:text-8xl uppercase font-title font-extrabold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
-                    Housechain
-                </h1>
+                <a href="/presentation">
+                    <h1 className="text-4xl md:text-8xl uppercase font-title font-extrabold bg-move bg-gradient-to-r from-purple via-red to-purple text-transparent bg-clip-text">
+                        Housechain
+                    </h1>
+                </a>
                 <p className="mt-6 text-lg leading-8 uppercase font-extrabold bg-gradient-to-r from-purple to-red text-transparent bg-clip-text">
                     L'immobilier réinventé par la blockchain
                 </p>
